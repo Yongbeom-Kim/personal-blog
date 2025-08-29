@@ -1,42 +1,153 @@
-#root {
-  max-width: 1280px;
+/* App Layout */
+.app {
+  max-width: 800px;
   margin: 0 auto;
   padding: 2rem;
-  text-align: center;
+  line-height: 1.6;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+/* Homepage Styles */
+.homepage h1 {
+  color: #333;
+  margin-bottom: 1rem;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.recent-posts {
+  margin: 2rem 0;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.post-preview {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #eee;
 }
 
-.card {
-  padding: 2em;
+.post-preview h3 {
+  margin: 0 0 0.5rem 0;
 }
 
-.read-the-docs {
-  color: #888;
+.post-preview h3 a {
+  color: #646cff;
+  text-decoration: none;
+}
+
+.post-preview h3 a:hover {
+  text-decoration: underline;
+}
+
+.view-all-posts {
+  display: inline-block;
+  margin-top: 1rem;
+  color: #646cff;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.view-all-posts:hover {
+  text-decoration: underline;
+}
+
+/* Posts Page Styles */
+.posts-page h1 {
+  color: #333;
+  margin-bottom: 2rem;
+}
+
+.post-item {
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #eee;
+}
+
+.post-item h2 {
+  margin: 0 0 0.5rem 0;
+}
+
+.post-item h2 a {
+  color: #333;
+  text-decoration: none;
+}
+
+.post-item h2 a:hover {
+  color: #646cff;
+}
+
+.post-date {
+  color: #666;
+  font-size: 0.9rem;
+  margin: 0 0 0.5rem 0;
+}
+
+.post-excerpt {
+  color: #555;
+  margin: 0.5rem 0;
+}
+
+.read-more {
+  color: #646cff;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.read-more:hover {
+  text-decoration: underline;
+}
+
+.back-home {
+  display: inline-block;
+  margin-top: 2rem;
+  color: #646cff;
+  text-decoration: none;
+}
+
+.back-home:hover {
+  text-decoration: underline;
+}
+
+/* Post Detail Styles */
+.post-detail h1 {
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.post-content {
+  margin: 2rem 0;
+}
+
+.post-content h2 {
+  color: #333;
+  margin: 1.5rem 0 1rem 0;
+}
+
+.post-content p {
+  margin-bottom: 1rem;
+}
+
+.post-content pre {
+  background: #f5f5f5;
+  padding: 1rem;
+  border-radius: 4px;
+  overflow-x: auto;
+}
+
+.post-content ul {
+  margin: 1rem 0;
+  padding-left: 2rem;
+}
+
+.post-navigation {
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid #eee;
+  display: flex;
+  gap: 1rem;
+}
+
+.post-navigation a {
+  color: #646cff;
+  text-decoration: none;
+}
+
+.post-navigation a:hover {
+  text-decoration: underline;
 }
