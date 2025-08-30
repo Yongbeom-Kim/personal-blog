@@ -1,0 +1,68 @@
+---
+slug: typescript-for-beginners
+title: TypeScript for Beginners
+date: 2024-01-05
+excerpt: TypeScript is a typed superset of JavaScript that compiles to plain JavaScript. It adds optional static typing to JavaScript, which can help catch errors early and improve code quality.
+---
+
+TypeScript is a typed superset of JavaScript that compiles to plain JavaScript. It adds optional static typing to JavaScript, which can help catch errors early and improve code quality.
+
+## Why TypeScript?
+
+TypeScript offers several benefits over plain JavaScript:
+
+- Static type checking catches errors at compile time
+- Better IDE support with autocomplete and refactoring
+- Improved code documentation through type annotations
+- Easier maintenance of large codebases
+- Enhanced developer productivity
+
+## Basic Types
+
+TypeScript includes several basic types:
+
+```typescript
+// Basic types
+let isDone: boolean = false;
+let decimal: number = 6;
+let color: string = "blue";
+let list: number[] = [1, 2, 3];
+
+// Function with types
+function greet(name: string): string {
+  return "Hello, " + name;
+}
+```
+
+## Interfaces
+
+Interfaces define the shape of objects:
+
+```typescript
+interface User {
+  name: string;
+  age: number;
+  email?: string; // Optional property
+}
+
+function createUser(user: User): void {
+  console.log(`Creating user: ${user.name}`);
+}
+```
+
+## Getting Started
+
+To start using TypeScript in your project:
+
+```bash
+# Install TypeScript globally
+npm install -g typescript
+
+# Create a TypeScript config file
+tsc --init
+
+# Compile TypeScript files
+tsc filename.ts
+```
+
+Getting started with TypeScript is easy - you can gradually adopt it in existing JavaScript projects by simply renaming .js files to .ts and adding type annotations incrementally.

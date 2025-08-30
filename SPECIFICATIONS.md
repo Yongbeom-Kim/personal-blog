@@ -33,9 +33,11 @@ src/
 │   ├── PostsPage.tsx    # Blog posts listing page
 │   ├── PostDetailPage.tsx # Individual post display page
 │   └── posts/           # Individual post files
-│       ├── getting-started-with-react.tsx
-│       ├── building-modern-web-apps.tsx
-│       └── typescript-for-beginners.tsx
+│       ├── getting-started-with-react.mdx
+│       ├── building-modern-web-apps.mdx
+│       ├── typescript-for-beginners.mdx
+│       ├── types.ts     # TypeScript interfaces
+│       └── utils.ts     # Utility functions
 └── assets/              # Static assets
 ```
 
@@ -51,54 +53,56 @@ src/
 
 ## Content Management Architecture
 
-### Individual Post Files Approach
+### MDX-Based Post Files Approach
 
-**Decision**: Each blog post is a separate `.tsx` file in `src/pages/posts/`
+**Decision**: Each blog post is a separate `.mdx` file in `src/pages/posts/` with YAML frontmatter
 
 **Structure**:
-```typescript
-interface PostProps {
-  title: string;
-  date: string;
-  content: React.ReactNode;
-}
+```mdx
+---
+slug: post-slug
+title: Post Title
+date: 2024-01-15
+excerpt: Brief description of the post content for listings and SEO.
+---
 
-function PostName(): PostProps {
-  return {
-    title: 'Post Title',
-    date: 'YYYY-MM-DD',
-    content: (
-      <div>
-        {/* Rich React content */}
-      </div>
-    )
-  };
-}
+# Post Content
 
-export default PostName;
+Markdown content with support for React components when needed.
+
+## Code Examples
+
+```javascript
+const example = "syntax highlighted code";
+```
+
+Regular markdown formatting with **bold**, *italic*, and [links](https://example.com).
 ```
 
 **Rationale**:
-- **Maintainability**: Each post is isolated, making it easy to edit individual content
-- **Rich Content**: Posts can include React components, not just markdown or plain text
-- **Type Safety**: TypeScript ensures consistent post structure
-- **Performance**: Dynamic imports allow for code splitting and on-demand loading
-- **Developer Experience**: Syntax highlighting and IntelliSense for post content
-- **Scalability**: Easy to add new posts without modifying existing code
+- **Content-First**: MDX separates content from code, making it easier for content authoring
+- **Frontmatter Metadata**: YAML frontmatter provides structured metadata (slug, title, date, excerpt)
+- **Rich Content**: MDX supports React components when needed while maintaining markdown simplicity
+- **Better Authoring**: Standard markdown syntax with syntax highlighting for code blocks
+- **SEO-Friendly**: Structured metadata in frontmatter improves SEO and content management
+- **Portability**: MDX files can be easily migrated to other static site generators
+- **Performance**: Smaller file sizes and faster parsing compared to TSX components
 
 ### Dynamic Loading System
 
 **PostDetailPage Implementation**:
-- Uses dynamic imports: `import(\`./posts/${slug}.tsx\`)`
+- Uses dynamic imports: `import(\`./posts/${slug}.mdx\`)`
 - Async loading with proper error handling
 - Loading states and fallbacks for better UX
+- Parses frontmatter metadata for post information
 
 **PostsPage Implementation**:
-- Loads metadata from all post files
-- Generates post summaries automatically
+- Loads metadata from MDX frontmatter
+- Uses excerpts from frontmatter for post summaries
 - Sorts posts by date (newest first)
+- Efficient metadata extraction without loading full content
 
-**Rationale**: Provides flexibility while maintaining performance through code splitting.
+**Rationale**: MDX provides better separation of metadata and content, improving performance and maintainability.
 
 ## Styling Architecture
 
@@ -136,12 +140,12 @@ export default PostName;
 ## Future Considerations
 
 ### Potential Enhancements
-1. **Metadata Management**: Add frontmatter-style metadata to posts
-2. **Search Functionality**: Implement client-side search across posts
-3. **Categories/Tags**: Add taxonomy system for content organization
-4. **RSS Feed**: Generate RSS feed from post metadata
-5. **Static Generation**: Consider Next.js for SSG if SEO becomes critical
-6. **CMS Integration**: Headless CMS integration for non-technical content editing
+1. **Categories/Tags**: Add taxonomy fields to frontmatter for content organization
+2. **Search Functionality**: Implement client-side search across posts and metadata
+3. **RSS Feed**: Generate RSS feed from MDX frontmatter metadata
+4. **Static Generation**: Consider Next.js for SSG if SEO becomes critical
+5. **CMS Integration**: Headless CMS integration for non-technical content editing
+6. **MDX Plugins**: Add remark/rehype plugins for enhanced markdown processing
 
 ### Scalability Notes
 - Current architecture supports up to ~100 posts efficiently
@@ -168,10 +172,19 @@ pnpm preview
 
 ## Adding New Posts
 
-1. Create new `.tsx` file in `src/pages/posts/`
-2. Follow the established `PostProps` interface
-3. Add slug to the `postSlugs` array in `PostsPage.tsx`
-4. File naming convention: `kebab-case.tsx`
+1. Create new `.mdx` file in `src/pages/posts/`
+2. Add YAML frontmatter with required fields: `slug`, `title`, `date`, `excerpt`
+3. Write content in Markdown format with optional React components
+4. File naming convention: `kebab-case.mdx`
+5. Frontmatter example:
+   ```yaml
+   ---
+   slug: my-new-post
+   title: My New Post Title
+   date: 2024-01-15
+   excerpt: Brief description for the post listing.
+   ---
+   ```
 
 ---
 
