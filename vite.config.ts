@@ -5,8 +5,6 @@ import remarkFrontmatter from 'remark-frontmatter'
 import {matter} from 'vfile-matter'
 import { VFile } from 'vfile'
 
-
-
 const mdxPlugin: PluginOption = {
   name: 'mdx-plugin',
   enforce: 'pre',
@@ -37,7 +35,6 @@ const mdxPlugin: PluginOption = {
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
-    // {enforce: 'pre', ...mdx({})},
     mdxPlugin,
     react({include: /\.(jsx|js|mdx|md|tsx|ts)$/})
   ]
