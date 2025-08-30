@@ -19,9 +19,17 @@ export const importPost = async (path: string): Promise<Post> => {
 }
 
 export const importAllPosts = async () => {
-  const posts = await Promise.all(
-    ALL_POST_PATHS.map(importPost)
-  )
+  // Use Vite's import.meta.glob for dynamic post loading with HMR support
+  const postModules = import.meta.glob('/src/pages/posts/*.mdx', { eager: true }) as Record<string, { frontmatter: PostFrontmatter; Content: React.ComponentType }>
+  
+  const posts = Object.values(postModules).map(module => ({
+    frontmatter: {
+      ...module.frontmatter,
+      date: new Date(module.frontmatter.date)
+    },
+    Content: module.Content
+  }))
+  
   posts.sort((a, b) => b.frontmatter.date.getTime() - a.frontmatter.date.getTime())
   return posts
 }

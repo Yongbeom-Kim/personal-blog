@@ -35,7 +35,7 @@ function HomePage() {
       <div className="recent-posts">
         <h2>Recent Posts</h2>
         {recentPosts.slice(0, 3).map((post) => (
-          <PostSummary frontmatter={post.frontmatter} />
+          <PostSummary key={post.frontmatter.slug} frontmatter={post.frontmatter} />
         ))}
       </div>
 

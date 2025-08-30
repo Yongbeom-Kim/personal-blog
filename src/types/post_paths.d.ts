@@ -1,1 +1,0 @@
-declare const ALL_POST_PATHS: string[]
