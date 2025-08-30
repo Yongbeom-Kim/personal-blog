@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { importAllPosts, type Post, type PostFrontmatter } from './posts/utils';
+import { importAllPostsSorted, type Post, type PostFrontmatter } from './posts/utils';
 import { useEffect, useState } from 'react';
 
 type PostSummaryProps = {
@@ -19,7 +19,7 @@ function PostSummary({frontmatter}: PostSummaryProps) {
 function HomePage() {
   const [recentPosts, setRecentPosts] = useState<Post[]>([])
   useEffect(() => {
-    importAllPosts().then((posts) => {
+    importAllPostsSorted().then((posts) => {
       setRecentPosts(posts)
     })
   }, [])
