@@ -1,16 +1,11 @@
 import { useParams, Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-
-// Define the post interface
-interface PostProps {
-  title: string;
-  date: string;
-  content: React.ReactNode;
-}
+import type { Post } from './posts/types';
+import { loadPost } from './posts/utils';
 
 function PostDetailPage() {
   const { slug } = useParams<{ slug: string }>();
-  const [postData, setPostData] = useState<PostProps | null>(null);
+  const [postData, setPostData] = useState<Post | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -21,12 +16,10 @@ function PostDetailPage() {
       return;
     }
 
-    const loadPost = async () => {
+    const loadPostData = async () => {
       try {
         setLoading(true);
-        const postModule = await import(`./posts/${slug}.tsx`);
-        const postFunction = postModule.default;
-        const data = postFunction();
+        const data = await loadPost(slug);
         setPostData(data);
         setError(null);
       } catch (err) {
@@ -37,7 +30,7 @@ function PostDetailPage() {
       }
     };
 
-    loadPost();
+    loadPostData();
   }, [slug]);
 
   if (loading) {

@@ -1,14 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 
-// Define the post interface
-interface PostProps {
-  title: string;
-  date: string;
-  content: React.ReactNode;
-}
-
-interface PostSummary {
+interface Post {
   slug: string;
   title: string;
   date: string;
