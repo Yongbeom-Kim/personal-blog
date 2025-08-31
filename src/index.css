@@ -1,11 +1,21 @@
 :root {
+  /* Color Variables */
+  --color-background: #f5f0e8;        /* Linen - Main Background */
+  --color-text: #5d3920;              /* Rich Espresso - Body Text, Headings */
+  --color-primary: #9a3e2a;           /* Burnt Sienna - Links, Buttons, CTAs */
+  --color-secondary: #c5a684;         /* Sandstone - Borders, Blockquotes */
+  --color-border: #c5a684;            /* Sandstone - Borders */
+  --color-success: #5a7d48;           /* Muted Sage - Success Notifications */
+  --color-warning: #c78d4e;           /* Warm Amber - Warning Notifications */
+  --color-error: #b04a46;             /* Terracotta Red - Error Notifications */
+  
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  color-scheme: light;
+  color: var(--color-text);
+  background-color: var(--color-background);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -15,11 +25,11 @@
 
 a {
   font-weight: 500;
-  color: #646cff;
+  color: var(--color-primary);
   text-decoration: inherit;
 }
 a:hover {
-  color: #535bf2;
+  color: var(--color-secondary);
 }
 
 body {
@@ -42,12 +52,12 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
+  background-color: var(--color-secondary);
   cursor: pointer;
   transition: border-color 0.25s;
 }
 button:hover {
-  border-color: #646cff;
+  border-color: var(--color-primary);
 }
 button:focus,
 button:focus-visible {
@@ -56,13 +66,13 @@ button:focus-visible {
 
 @media (prefers-color-scheme: light) {
   :root {
-    color: #213547;
-    background-color: #ffffff;
+    color: var(--color-text);
+    background-color: var(--color-background);
   }
   a:hover {
-    color: #747bff;
+    color: var(--color-secondary);
   }
   button {
-    background-color: #f9f9f9;
+    background-color: var(--color-secondary);
   }
 }

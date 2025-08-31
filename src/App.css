@@ -8,7 +8,7 @@
 
 /* Homepage Styles */
 .homepage h1 {
-  color: #333;
+  color: var(--color-text);
   margin-bottom: 1rem;
 }
 
@@ -27,7 +27,7 @@
 }
 
 .post-preview h3 a {
-  color: #646cff;
+  color: var(--color-primary);
   text-decoration: none;
 }
 
@@ -38,7 +38,7 @@
 .view-all-posts {
   display: inline-block;
   margin-top: 1rem;
-  color: #646cff;
+  color: var(--color-primary);
   text-decoration: none;
   font-weight: 500;
 }
@@ -62,7 +62,7 @@
 }
 
 .posts-page h1 {
-  color: #2c3e50;
+  color: var(--color-primary);
   font-size: 2.5rem;
   font-weight: 700;
   margin-bottom: 1rem;
@@ -90,18 +90,18 @@
 }
 
 .post-card {
-  background: #fff;
+  background: var(--color-background);
   border-radius: 12px;
   padding: 1.5rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(93, 57, 32, 0.1);
   transition: all 0.3s ease;
-  border: 1px solid #f0f0f0;
+  border: 1px solid var(--color-border);
 }
 
 .post-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-  border-color: #646cff;
+  box-shadow: 0 8px 25px rgba(93, 57, 32, 0.15);
+  border-color: var(--color-primary);
 }
 
 .post-card h2 {
@@ -111,13 +111,13 @@
 }
 
 .post-card h2 a {
-  color: #2c3e50;
+  color: var(--color-primary);
   text-decoration: none;
   transition: color 0.2s ease;
 }
 
 .post-card h2 a:hover {
-  color: #646cff;
+  color: var(--color-secondary);
 }
 
 .post-excerpt {
@@ -142,19 +142,19 @@
 }
 
 .read-more {
-  color: #646cff;
+  color: var(--color-primary);
   text-decoration: none;
   font-size: 0.9rem;
   font-weight: 500;
   padding: 0.5rem 1rem;
   border-radius: 6px;
   transition: all 0.2s ease;
-  background: rgba(100, 108, 255, 0.1);
+  background: rgba(216, 179, 134, 0.3);
 }
 
 .read-more:hover {
-  background: #646cff;
-  color: white;
+  background: var(--color-primary);
+  color: var(--color-background);
   transform: translateX(2px);
 }
 
@@ -176,24 +176,24 @@
 
 .page-navigation a {
   display: inline-block;
-  color: #646cff;
+  color: var(--color-primary);
   text-decoration: none;
   font-weight: 500;
   padding: 0.75rem 1.5rem;
   border-radius: 8px;
   transition: all 0.2s ease;
-  background: rgba(100, 108, 255, 0.1);
+  background: rgba(216, 179, 134, 0.3);
 }
 
 .page-navigation a:hover {
-  background: #646cff;
-  color: white;
+  background: var(--color-primary);
+  color: var(--color-background);
   transform: translateY(-2px);
 }
 
 /* Post Detail Styles */
 .post-detail h1 {
-  color: #333;
+  color: var(--color-primary);
   margin-bottom: 0.5rem;
 }
 
@@ -202,7 +202,7 @@
 }
 
 .post-content h2 {
-  color: #333;
+  color: var(--color-primary);
   margin: 1.5rem 0 1rem 0;
 }
 
@@ -211,10 +211,11 @@
 }
 
 .post-content pre {
-  background: #f5f5f5;
+  background: var(--color-secondary);
   padding: 1rem;
   border-radius: 4px;
   overflow-x: auto;
+  color: var(--color-primary);
 }
 
 .post-content ul {
@@ -231,7 +232,7 @@
 }
 
 .post-navigation a {
-  color: #646cff;
+  color: var(--color-primary);
   text-decoration: none;
 }
 
