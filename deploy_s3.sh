@@ -4,6 +4,8 @@ s3_name=$(tofu output -raw s3_bucket_name)
 
 cloudfront_dist_id=$(tofu output -raw cloudfront_distribution_id)
 
+pnpm build
+
 # Sync the dist directory to S3 bucket
 aws s3 sync ./dist s3://${s3_name} --delete
 
