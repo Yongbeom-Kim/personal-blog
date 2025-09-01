@@ -23,7 +23,7 @@
 }
 
 .blog-title {
-  font-size: 48px;
+  font-size: var(--font-size-6xl);
   font-weight: 900;
   margin: 0 0 8px 0;
   letter-spacing: -0.03em;
@@ -31,7 +31,7 @@
 }
 
 .blog-subtitle {
-  font-size: 18px;
+  font-size: var(--font-size-md);
   margin: 0;
   font-weight: 400;
 }
@@ -52,11 +52,11 @@
   }
   
   .blog-title {
-    font-size: 36px;
+    font-size: var(--font-size-4xl);
   }
   
   .blog-subtitle {
-    font-size: 16px;
+    font-size: var(--font-size-base);
   }
 }
 
@@ -71,6 +71,6 @@
   }
   
   .blog-title {
-    font-size: 32px;
+    font-size: var(--font-size-3xl);
   }
 }

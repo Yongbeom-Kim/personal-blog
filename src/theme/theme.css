@@ -5,7 +5,7 @@
   right: 20px;
   background: none;
   border: none;
-  font-size: 20px;
+  font-size: var(--font-size-lg);
   cursor: pointer;
   padding: 8px;
   border-radius: 50%;
@@ -74,6 +74,6 @@
   .theme-toggle {
     top: 16px;
     right: 16px;
-    font-size: 18px;
+    font-size: var(--font-size-md);
   }
 }

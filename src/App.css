@@ -5,7 +5,7 @@
   margin: 0 auto;
   padding: 0 20px;
   line-height: 1.7;
-  font-size: 18px;
+  font-size: var(--font-size-md);
 }
 
 
@@ -22,7 +22,7 @@
   text-align: center;
   padding: 60px 0;
 
-  font-size: 16px;
+  font-size: var(--font-size-base);
 }
 
 /* Post Detail Page Styles */
@@ -38,7 +38,7 @@
 }
 
 .post-detail .post-detail-title {
-  font-size: 40px;
+  font-size: var(--font-size-5xl);
   margin-bottom: 12px;
 }
 
@@ -47,7 +47,7 @@
 }
 
 .post-detail .post-content {
-  font-size: 18px;
+  font-size: var(--font-size-md);
   line-height: 1.7;
 
 }
@@ -62,15 +62,15 @@
 }
 
 .post-detail .post-content h1 {
-  font-size: 32px;
+  font-size: var(--font-size-3xl);
 }
 
 .post-detail .post-content h2 {
-  font-size: 28px;
+  font-size: var(--font-size-2xl);
 }
 
 .post-detail .post-content h3 {
-  font-size: 24px;
+  font-size: var(--font-size-xl);
 }
 
 .post-detail .post-content p {
@@ -107,7 +107,7 @@
 .post-detail .post-content pre code {
   background: none;
   padding: 0;
-  font-size: 14px;
+  font-size: var(--font-size-sm);
 }
 
 .post-detail .post-content blockquote {
@@ -175,7 +175,7 @@
   }
   
   .post-detail .post-content h3 {
-    font-size: 20px;
+    font-size: var(--font-size-lg);
   }
 }
 
