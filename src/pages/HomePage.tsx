@@ -1,47 +1,38 @@
-import { Link } from 'react-router-dom';
-import { importAllPostsSorted, type Post, type PostFrontmatter } from './posts/utils';
+import { importAllPostsSorted, type Post } from './posts/utils';
 import { useEffect, useState } from 'react';
-
-type PostSummaryProps = {
-  frontmatter: PostFrontmatter;
-}
-function PostSummary({frontmatter}: PostSummaryProps) {
-  return (
-    <div className="post-preview">
-      <h3>
-        <Link to={`/posts/${frontmatter.slug}`}>{frontmatter.title}</Link>
-      </h3>
-      <p>{frontmatter.excerpt}</p>
-    </div>
-  )
-}
+import PostItem from '../components/post-item/PostItem';
 
 function HomePage() {
-  const [recentPosts, setRecentPosts] = useState<Post[]>([])
+  const [posts, setPosts] = useState<Post[]>([])
+  const [loading, setLoading] = useState(true)
+  
   useEffect(() => {
     importAllPostsSorted().then((posts) => {
-      setRecentPosts(posts)
+      setPosts(posts)
+      setLoading(false)
     })
   }, [])
   
+  if (loading) {
+    return (
+      <div className="homepage">
+        <div className="loading">Loading...</div>
+      </div>
+    )
+  }
   
   return (
     <div className="homepage">
-      <h1>Welcome to My Blog</h1>
-      <p>Latest blog posts and updates</p>
-
+      <header className="blog-header">
+        <h1 className="blog-title">Yongbeom's Dev Blog</h1>
+        <p className="blog-subtitle">Welcome to my personal blog!</p>
+      </header>
       
-      
-      <div className="recent-posts">
-        <h2>Recent Posts</h2>
-        {recentPosts.slice(0, 3).map((post) => (
-          <PostSummary key={post.frontmatter.slug} frontmatter={post.frontmatter} />
+      <main className="posts-list">
+        {posts.map((post) => (
+          <PostItem key={post.frontmatter.slug} frontmatter={post.frontmatter} />
         ))}
-      </div>
-
-      <Link to="/posts" className="view-all-posts">
-        View All Posts →
-      </Link>
+      </main>
     </div>
   );
 }

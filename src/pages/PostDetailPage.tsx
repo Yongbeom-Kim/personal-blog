@@ -49,34 +49,33 @@ function PostDetailPage() {
   if (error || !postData) {
     return (
       <div className="post-detail">
+        <Link to="/" className="back-link">← Back</Link>
         <h1>Post not found</h1>
         <p>{error || 'The requested post could not be found.'}</p>
-        <Link to="/posts">← Back to Posts</Link>
       </div>
     );
   }
 
   return (
     <div className="post-detail">
-      <nav className="breadcrumb">
-        <Link to="/">Home</Link> &gt; <Link to="/posts">Posts</Link> &gt; {postData.frontmatter.title}
-      </nav>
+      <Link to="/" className="back-link">← Back</Link>
       
       <article>
-        <header>
-          <h1>{postData.frontmatter.title}</h1>
-          <time>{postData.frontmatter.date.toLocaleDateString()}</time>
+        <header className="post-header">
+          <time className="post-date">
+            {postData.frontmatter.date.toLocaleDateString('en-US', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric'
+            })}
+          </time>
+          <h1 className="post-detail-title">{postData.frontmatter.title}</h1>
         </header>
         
         <div className="post-content">
           <postData.Content />
         </div>
       </article>
-      
-      <nav className="post-navigation">
-        <Link to="/posts" className="back-link">← Back to Posts</Link>
-        <Link to="/" className="home-link">Home</Link>
-      </nav>
     </div>
   );
 }

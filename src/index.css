@@ -40,8 +40,12 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+#root {
+  position: fixed;
+  inset: 0;
+}
+
 a {
-  font-weight: 500;
   color: var(--color-primary);
   text-decoration: inherit;
 }

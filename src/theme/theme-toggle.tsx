@@ -16,12 +16,17 @@ export function ThemeToggleSwitch() {
     document.documentElement.setAttribute("data-theme", theme);
   }, [theme]);
 
+  const toggleTheme = () => {
+    setTheme(theme => theme === "light" ? "dark" : "light");
+  };
+
   return (
     <button
-      onClick={() => setTheme(theme => theme === "light" ? "dark" : "light")}
+      onClick={toggleTheme}
       aria-label={`Switch to ${theme === "light" ? "dark" : "light"} theme`}
       aria-pressed={theme === "dark"}
       className="theme-toggle"
+      title={`Switch to ${theme === "light" ? "dark" : "light"} mode`}
     >
       <span aria-hidden="true">
         {theme === "light" ? "🌙" : "☀️"}
