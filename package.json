@@ -12,11 +12,13 @@
   "dependencies": {
     "@mdx-js/mdx": "^3.1.1",
     "@mdx-js/react": "^3.1.1",
+    "@tailwindcss/vite": "^4.1.12",
     "gray-matter": "^4.0.3",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "react-router-dom": "^7.8.2",
     "remark-frontmatter": "^5.0.0",
+    "tailwindcss": "^4.1.12",
     "vfile": "^6.0.3",
     "vfile-matter": "^5.0.1"
   },

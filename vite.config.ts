@@ -4,6 +4,7 @@ import {compileSync} from '@mdx-js/mdx'
 import remarkFrontmatter from 'remark-frontmatter'
 import {matter} from 'vfile-matter'
 import { VFile } from 'vfile'
+import tailwindcss from "@tailwindcss/vite"
 
 const mdxPlugin: PluginOption = {
   name: 'mdx-plugin',
@@ -35,6 +36,7 @@ const mdxPlugin: PluginOption = {
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
+    tailwindcss(),
     mdxPlugin,
     react({include: /\.(jsx|js|mdx|md|tsx|ts)$/})
   ]
