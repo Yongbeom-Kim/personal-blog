@@ -58,7 +58,7 @@
   text-align: center;
   margin-bottom: 3rem;
   padding-bottom: 2rem;
-  border-bottom: 2px solid #f0f0f0;
+  border-bottom: 2px solid var(--color-border);
 }
 
 .posts-page h1 {
@@ -70,7 +70,7 @@
 }
 
 .posts-page header p {
-  color: #666;
+  color: var(--color-text);
   font-size: 1.1rem;
   max-width: 600px;
   margin: 0 auto;
@@ -121,7 +121,7 @@
 }
 
 .post-excerpt {
-  color: #555;
+  color: var(--color-text);
   margin: 0 0 1.5rem 0;
   line-height: 1.6;
   font-size: 0.95rem;
@@ -132,11 +132,11 @@
   justify-content: space-between;
   align-items: center;
   padding-top: 1rem;
-  border-top: 1px solid #f0f0f0;
+  border-top: 1px solid var(--color-border);
 }
 
 .post-meta time {
-  color: #888;
+  color: var(--color-text);
   font-size: 0.85rem;
   font-weight: 500;
 }
@@ -161,8 +161,8 @@
 .no-posts {
   text-align: center;
   padding: 3rem;
-  color: #666;
-  background: #f9f9f9;
+  color: var(--color-text);
+  background: var(--color-background);
   border-radius: 12px;
   margin: 2rem 0;
 }
@@ -171,7 +171,7 @@
   text-align: center;
   margin-top: 3rem;
   padding-top: 2rem;
-  border-top: 1px solid #f0f0f0;
+  border-top: 1px solid var(--color-border);
 }
 
 .page-navigation a {
@@ -226,7 +226,7 @@
 .post-navigation {
   margin-top: 3rem;
   padding-top: 2rem;
-  border-top: 1px solid #eee;
+  border-top: 1px solid var(--color-border);
   display: flex;
   gap: 1rem;
 }
