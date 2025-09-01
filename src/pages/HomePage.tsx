@@ -1,6 +1,7 @@
 import { importAllPostsSorted, type Post } from './posts/utils';
 import { useEffect, useState } from 'react';
 import PostItem from '../components/post-item/PostItem';
+import Header from '../components/header/Header';
 
 function HomePage() {
   const [posts, setPosts] = useState<Post[]>([])
@@ -23,15 +24,7 @@ function HomePage() {
   
   return (
     <div className="homepage">
-      <header className="blog-header">
-        <div className="header-content">
-          <img src="/corgi_circle_compressed.png" alt="Corgi" className="header-icon" />
-          <div className="header-text">
-            <h1 className="blog-title">Yongbeom's Dev Blog</h1>
-            <p className="blog-subtitle">I write about everything tech (that interests me).</p>
-          </div>
-        </div>
-      </header>
+      <Header />
       
       <main className="posts-list">
         {posts.map((post) => (
