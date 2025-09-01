@@ -2,12 +2,11 @@ import { Routes, Route } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import PostDetailPage from "./pages/PostDetailPage";
 import { ThemeToggleSwitch, ThemeProvider } from "./theme";
-import "./App.css";
 
 function App() {
   return (
     <ThemeProvider>
-      <div className="app">
+      <div className="relative max-w-[680px] mx-auto px-5 leading-[1.7] text-md h-fit min-h-screen overflow-auto">
         <ThemeToggleSwitch />
         <Routes>
           <Route path="/" element={<HomePage />} />

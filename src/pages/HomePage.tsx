@@ -16,17 +16,17 @@ function HomePage() {
   
   if (loading) {
     return (
-      <div className="homepage">
-        <div className="loading">Loading...</div>
+      <div>
+        <div className="text-center py-15 text-base text-secondary">Loading...</div>
       </div>
     )
   }
   
   return (
-    <div className="homepage">
+    <div>
       <Header />
       
-      <main className="posts-list">
+      <main className="mb-20">
         {posts.map((post) => (
           <PostItem key={post.frontmatter.slug} frontmatter={post.frontmatter} />
         ))}

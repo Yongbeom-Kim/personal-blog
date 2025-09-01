@@ -40,7 +40,7 @@ function PostDetailPage() {
 
   if (loading) {
     return (
-      <div className="post-detail">
+      <div className="max-w-[680px] mx-auto pt-10 px-5 pb-20 md:pt-10 md:px-5 md:pb-15">
         <div>Loading post...</div>
       </div>
     );
@@ -48,8 +48,8 @@ function PostDetailPage() {
 
   if (error || !postData) {
     return (
-      <div className="post-detail">
-        <Link to="/" className="back-link">← Back</Link>
+      <div className="max-w-[680px] mx-auto pt-10 px-5 pb-20 md:pt-5 md:px-4 md:pb-15">
+        <Link to="/" className="inline-block mb-10 no-underline text-base font-medium text-primary hover:underline">← Back</Link>
         <h1>Post not found</h1>
         <p>{error || 'The requested post could not be found.'}</p>
       </div>
@@ -57,22 +57,22 @@ function PostDetailPage() {
   }
 
   return (
-    <div className="post-detail">
-      <Link to="/" className="back-link">← Back</Link>
+    <div className="max-w-[680px] mx-auto pt-10 px-5 pb-20 md:pt-5 md:px-4 md:pb-15">
+      <Link to="/" className="inline-block mb-10 no-underline text-base font-medium text-primary hover:underline">← Back</Link>
       
       <article>
-        <header className="post-header">
-          <time className="post-date">
+        <header className="mb-10 text-left">
+          <time className="mb-0 text-sm text-secondary">
             {postData.frontmatter.date.toLocaleDateString('en-US', {
               year: 'numeric',
               month: 'long',
               day: 'numeric'
             })}
           </time>
-          <h1 className="post-detail-title">{postData.frontmatter.title}</h1>
+          <h1 className="text-5xl mb-3 md:text-[32px] max-[480px]:text-[28px] text-text font-bold">{postData.frontmatter.title}</h1>
         </header>
         
-        <div className="post-content">
+        <div className="text-md leading-[1.7] text-text md:text-base [&_h1]:mt-10 [&_h1]:mb-4 [&_h1]:font-bold [&_h1]:text-3xl [&_h1]:text-text [&_h2]:mt-10 [&_h2]:mb-4 [&_h2]:font-bold [&_h2]:text-2xl [&_h2]:text-text [&_h3]:mt-10 [&_h3]:mb-4 [&_h3]:font-bold [&_h3]:text-xl [&_h3]:text-text [&_p]:mb-6 [&_a]:text-primary [&_a]:underline [&_a]:decoration-1 [&_a]:underline-offset-2 [&_a:hover]:decoration-2 [&_code]:bg-border [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:rounded [&_code]:text-base [&_code]:font-mono [&_pre]:bg-border [&_pre]:p-5 [&_pre]:rounded-md [&_pre]:overflow-x-auto [&_pre]:my-6 [&_pre_code]:bg-transparent [&_pre_code]:p-0 [&_pre_code]:text-sm [&_blockquote]:border-l-[3px] [&_blockquote]:border-primary [&_blockquote]:pl-5 [&_blockquote]:my-6 [&_blockquote]:italic [&_blockquote]:text-secondary [&_ul]:mb-6 [&_ul]:pl-6 [&_ol]:mb-6 [&_ol]:pl-6 [&_li]:mb-2 md:[&_h1]:text-[28px] md:[&_h2]:text-2xl md:[&_h3]:text-lg">
           <postData.Content />
         </div>
       </article>
