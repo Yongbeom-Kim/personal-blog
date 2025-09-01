@@ -4,7 +4,7 @@
   --color-background: #f5f0e8;        /* Linen - Main Background */
   --color-text: #5d3920;              /* Rich Espresso - Body Text, Headings */
   --color-primary: #9a3e2a;           /* Burnt Sienna - Links, Buttons, CTAs */
-  --color-secondary: #c5a684;         /* Sandstone - Borders, Blockquotes */
+  --color-secondary: #8b6f47;         /* Darker Sandstone - Subtitles, Secondary Text */
   --color-border: #c5a684;            /* Sandstone - Borders */
   --color-success: #5a7d48;           /* Muted Sage - Success Notifications */
   --color-warning: #c78d4e;           /* Warm Amber - Warning Notifications */
@@ -16,7 +16,7 @@
   --color-background: #2c2520;        /* Charcoal Brown - Main Background */
   --color-text: #ebddcb;              /* Parchment - Body Text */
   --color-primary: #d86a55;           /* Vibrant Russet - Links, Buttons, CTAs */
-  --color-secondary: #c9ad8f;         /* Aged Brass - Borders, Blockquotes */
+  --color-secondary: #d4c4a8;         /* Lighter Aged Brass - Subtitles, Secondary Text */
   --color-border: #c9ad8f;            /* Aged Brass - Borders */
   --color-success: #8db07e;           /* Sage Green - Success Notifications */
   --color-warning: #f2b872;           /* Golden Amber - Warning Notifications */
