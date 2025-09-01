@@ -28,7 +28,7 @@ function HomePage() {
           <img src="/corgi_circle_compressed.png" alt="Corgi" className="header-icon" />
           <div className="header-text">
             <h1 className="blog-title">Yongbeom's Dev Blog</h1>
-            <p className="blog-subtitle">Welcome to my personal blog!</p>
+            <p className="blog-subtitle">I write about everything tech (that interests me).</p>
           </div>
         </div>
       </header>
