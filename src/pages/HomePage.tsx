@@ -24,8 +24,13 @@ function HomePage() {
   return (
     <div className="homepage">
       <header className="blog-header">
-        <h1 className="blog-title">Yongbeom's Dev Blog</h1>
-        <p className="blog-subtitle">Welcome to my personal blog!</p>
+        <div className="header-content">
+          <img src="/corgi_circle_compressed.png" alt="Corgi" className="header-icon" />
+          <div className="header-text">
+            <h1 className="blog-title">Yongbeom's Dev Blog</h1>
+            <p className="blog-subtitle">Welcome to my personal blog!</p>
+          </div>
+        </div>
       </header>
       
       <main className="posts-list">
