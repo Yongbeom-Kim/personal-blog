@@ -5,8 +5,6 @@ date: '2025-09-02'
 excerpt: A comprehensive guide to implementing dark/light themes in modern web development, covering critical implementation errors, accessibility concerns, and best practices to prevent FOUC and ensure seamless user experience.
 ---
 
-# Dark/Light Theme Management - Common Pitfalls and Best Practices
-
 Implementing dark and light themes in modern web applications seems straightforward until you encounter the dreaded Flash of Unstyled Content (FOUC), accessibility issues, or inconsistent browser behavior. After working with numerous theme implementations, I've identified the most common pitfalls developers face and the proven solutions that actually work.
 
 Let's dive into the critical errors that plague theme implementations and how to build a robust, accessible theming system.
