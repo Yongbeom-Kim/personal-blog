@@ -1,11 +1,11 @@
 import { Link } from 'react-router-dom';
 import { type PostFrontmatter } from '../../posts/utils';
 
-type PostItemProps = {
+type PostSummaryItemProps = {
   frontmatter: PostFrontmatter;
 }
 
-function PostItem({ frontmatter }: PostItemProps) {
+function PostSummaryItem({ frontmatter }: PostSummaryItemProps) {
   return (
     <article className="mb-16 pb-10 md:mb-12 md:pb-8 border-b border-border last:border-b-0 last:mb-0 last:pb-0">
       <time className="block text-sm text-secondary mb-2 font-normal tracking-wider uppercase">
@@ -28,4 +28,4 @@ function PostItem({ frontmatter }: PostItemProps) {
   )
 }
 
-export default PostItem;
+export default PostSummaryItem;

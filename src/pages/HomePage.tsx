@@ -1,6 +1,6 @@
 import { importAllPostsSorted, type Post } from '../posts/utils';
 import { useEffect, useState } from 'react';
-import PostItem from '../components/post-item/PostItem';
+import PostSummaryItem from '../components/post-summary-item/PostSummaryItem';
 import Header from '../components/header/Header';
 
 function HomePage() {
@@ -28,7 +28,7 @@ function HomePage() {
       
       <main className="mb-20">
         {posts.map((post) => (
-          <PostItem key={post.frontmatter.slug} frontmatter={post.frontmatter} />
+          <PostSummaryItem key={post.frontmatter.slug} frontmatter={post.frontmatter} />
         ))}
       </main>
     </div>
