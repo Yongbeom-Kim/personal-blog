@@ -25,7 +25,7 @@ export function ThemeToggleSwitch() {
       onClick={toggleTheme}
       aria-label={`Switch to ${theme === "light" ? "dark" : "light"} theme`}
       aria-pressed={theme === "dark"}
-      className="fixed bottom-5 left-5 bg-transparent border-none cursor-pointer p-3 rounded-full transition-all duration-300 z-[100] aspect-square grid place-content-center h-12 w-12 hover:scale-110 md:top-4 md:right-4 md:bottom-auto md:left-auto md:h-10 md:w-10 md:p-2"
+      className="fixed bottom-3 right-3 bg-transparent border-none cursor-pointer p-3 rounded-full transition-all duration-300 z-[100] aspect-square grid place-content-center h-12 w-12 hover:scale-110 md:top-4 md:right-4 md:bottom-auto md:left-auto md:h-10 md:w-10 md:p-2"
       title={`Switch to ${theme === "light" ? "dark" : "light"} mode`}
     >
       <div 
