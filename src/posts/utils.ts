@@ -20,7 +20,7 @@ export const importPost = async (path: string): Promise<Post> => {
 
 export const importAllPosts = async (): Promise<Map<string, Post>> => {
   // Use Vite's import.meta.glob for dynamic post loading with HMR support
-  const postModules = import.meta.glob('/src/pages/posts/*.mdx', { eager: true }) as Record<string, { frontmatter: PostFrontmatter; Content: React.ComponentType }>
+  const postModules = import.meta.glob('/src/posts/*.mdx', { eager: true }) as Record<string, { frontmatter: PostFrontmatter; Content: React.ComponentType }>
   
   const postsMap = new Map<string, Post>()
   

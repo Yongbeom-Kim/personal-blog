@@ -1,0 +1,40 @@
+---
+slug: your-post-slug
+title: Your Post Title
+date: 'YYYY-MM-DD'
+excerpt: A brief description of your post that will appear in the post list and meta descriptions. Keep it concise and engaging.
+---
+
+# Your Post Title
+
+Start your post content here. This is where you'll write the main body of your article.
+
+## Section Heading
+
+Use markdown syntax for formatting:
+
+- **Bold text** for emphasis
+- *Italic text* for subtle emphasis
+- `Code snippets` for inline code
+- [Links](https://example.com) for external references
+
+### Subsection
+
+You can include code blocks:
+
+```javascript
+const example = () => {
+  console.log('Hello, world!');
+};
+```
+
+## Best Practices
+
+1. Use descriptive headings
+2. Keep paragraphs concise
+3. Include code examples when relevant
+4. Maintain a conversational tone
+
+## Conclusion
+
+Wrap up your post with key takeaways or next steps for readers.

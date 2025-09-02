@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { type PostFrontmatter } from '../../pages/posts/utils';
+import { type PostFrontmatter } from '../../posts/utils';
 
 type PostItemProps = {
   frontmatter: PostFrontmatter;
