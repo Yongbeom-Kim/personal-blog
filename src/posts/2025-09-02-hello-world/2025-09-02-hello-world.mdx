@@ -1,5 +1,5 @@
 ---
-slug: hello-world
+slug: blog-devlog-1-hello-world
 title: Hello World - Welcome to My Technical Blog
 date: '2025-09-02'
 excerpt: Welcome to my new blog! A quick introduction to what you'll find here, the tech stack powering this site, and some exciting topics I'm planning to explore.
@@ -17,38 +17,67 @@ This blog is a simple React/Vite + Typescript project, with Tailwind for styling
 
 I am self-hosting it on AWS, with a pretty basic stack as well. The domain is on Route53, and the blog is hosted on an S3 bucket with a Cloudfront CDN in front of it.
 
-![aws-architecture](/aws-architecture.png "Really, nothing much to say here.")
+![AWS architecture (Route53 pointing to Cloudfront, which points to S3 bucket)](aws-architecture.png "Really, nothing much to say here.")
 
+I also have some funny little hacks as workarounds to solutions so far.
 
+#### MDX Frontmatter
 
-## What's Coming Next
+To be honest, I blame MDX's poor documentation for this. MDX's [documentation](https://mdxjs.com/docs/getting-started/) tells you to use the `mdx` plugin from `@mdx-js/rollup`, but it could not extract the markdown frontmatter I needed. After some frustration with the documentation (the [frontmatter guide](https://mdxjs.com/guides/frontmatter) was particularly useless), I decided to write the plugin myself.
 
-I've got some pretty exciting technical topics lined up that I'm genuinely curious to explore and share:
+```typescript
+// vite.config.ts
+const mdxPlugin: PluginOption = {
+  name: "mdx-plugin",
+  enforce: "pre",
+  transform(src, id) {
+    if (!id.endsWith(".mdx")) {
+      return {
+        code: src,
+        map: null,
+      };
+    }
+    const compiledCode = compileSync(src, {
+      remarkPlugins: [remarkFrontmatter],
+    });
+    const vfile = new VFile({ path: id, value: src });
+    matter(vfile);
+    const frontMatter = vfile.data.matter as Record<string, any>;
 
-### Event Tracking Deep Dive
-I'm planning to implement comprehensive event tracking across the blog and document the entire process. We'll explore different approaches, privacy considerations, and performance implications.
+    let code: string =
+      compiledCode.value instanceof Uint8Array
+        ? compiledCode.value.toString()
+        : compiledCode.value;
+    code = code.replace(
+      "export default function MDXContent",
+      "export function Content"
+    );
+    code += "\n" + "export const frontmatter = " + JSON.stringify(frontMatter);
+    return {
+      code,
+      map: null,
+    };
+  },
+};
+```
 
-### SSR vs SSG Showdown
-Time for some good old-fashioned benchmarking! I want to experiment with Server-Side Rendering and Static Site Generation approaches, measuring performance with and without event tracking. Expect charts, graphs, and probably some surprising results.
+Of course, right after I write this, I discover the plugin [`remark-mdx-frontmatter`](https://github.com/remcohaszing/remark-mdx-frontmatter). Too late.
 
-### The Hybrid MPA Strategy
-Moving beyond the traditional SPA vs MPA debate, I'm curious about hybrid multi-page application strategies. How can we get the best of both worlds? Let's find out together.
+#### Paragraph Override
 
-### True MPA with Code Splitting
-Finally, I want to explore what a true multi-page application looks like in 2024, complete with intelligent code splitting and modern tooling. Spoiler alert: it might not be what you expect.
+Another thing I discovered was that MDX loves putting everything in paragraph tags. To support image captions, I decided to override my images with `<figure>` tags, and that gives you this problem:
 
-## Why This Blog Exists
+![Error message: In HTML, figure cannot be a descendant of p. This will cause a hydration error.](./figure-p-descendent-error-message.png "")
 
-Honestly? I learn best by building and explaining. There's something about writing down your thoughts that forces you to really understand what you're talking about. Plus, if I can help someone else avoid the rabbit holes I've fallen into, that's a win in my book.
+Of course, the fix is to switch out all `<p>` tags with `<div>` tags.
 
-I'm aiming for that sweet spot between technical depth and accessibility - detailed enough to be useful, but conversational enough that you don't need a computer science degree to follow along.
+```typescript
+// src/pages/post/mdx-components/P.tsx
+export function P(props: { children: ReactNode }) {
+  return <div className="mb-3">{props.children}</div>
+}
+```
 
-## Let's Build Something Cool
+## Wrapping Up
 
-So that's the plan! I'm excited to share this journey with you, whether you're a seasoned developer, just starting out, or somewhere in between. Feel free to reach out if you have questions, suggestions, or just want to chat about web development.
-
-Here's to building cool stuff and sharing what we learn along the way. 🚀
-
----
-
-*P.S. - Yes, this is a "hello world" post, but I promise the code examples will get more interesting from here!*
+So there we go, my first step into blogging! I'm excited to share my journey, learnings, and insights with you all.

@@ -17,6 +17,8 @@
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "react-router-dom": "^7.8.2",
+    "rehype-mdx-import-media": "^1.2.0",
+    "rehype-starry-night": "^2.2.0",
     "remark-frontmatter": "^5.0.0",
     "tailwindcss": "^4.1.12",
     "vfile": "^6.0.3",
