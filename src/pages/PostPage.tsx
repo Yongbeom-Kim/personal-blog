@@ -2,7 +2,7 @@ import { useParams, Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { importAllPosts, type Post } from '../posts/utils';
 
-function PostDetailPage() {
+function PostPage() {
   const { slug } = useParams<{ slug: string }>();
   const [postData, setPostData] = useState<Post | null>(null);
   const [loading, setLoading] = useState(true);
@@ -80,4 +80,4 @@ function PostDetailPage() {
   );
 }
 
-export default PostDetailPage;
+export default PostPage;

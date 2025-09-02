@@ -1,6 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import HomePage from "./pages/HomePage";
-import PostDetailPage from "./pages/PostDetailPage";
+import PostPage from "./pages/PostPage";
 import { ThemeToggleSwitch, ThemeProvider } from "./theme";
 
 function App() {
@@ -10,7 +10,7 @@ function App() {
         <ThemeToggleSwitch />
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/posts/:slug" element={<PostDetailPage />} />
+          <Route path="/posts/:slug" element={<PostPage />} />
         </Routes>
       </div>
     </ThemeProvider>

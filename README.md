@@ -28,7 +28,7 @@ src/
 ├── pages/
 │   ├── HomePage.tsx          # Landing page
 │   ├── PostsPage.tsx         # Blog posts listing
-│   ├── PostDetailPage.tsx    # Individual post view
+│   ├── PostPage.tsx          # Individual post view
 │   └── posts/                # MDX blog posts
 │       ├── post1.mdx
 │       └── post2.mdx
