@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 s3_name=$(tofu output -raw s3_bucket_name)
 
