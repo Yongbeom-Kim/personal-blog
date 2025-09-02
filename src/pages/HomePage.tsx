@@ -1,4 +1,4 @@
-import { importAllPostsSorted, type Post } from './posts/utils';
+import { importAllPostsSorted, type Post } from '../posts/utils';
 import { useEffect, useState } from 'react';
 import PostItem from '../components/post-item/PostItem';
 import Header from '../components/header/Header';

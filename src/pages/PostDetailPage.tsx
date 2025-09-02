@@ -1,6 +1,6 @@
 import { useParams, Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { importAllPosts, type Post } from './posts/utils';
+import { importAllPosts, type Post } from '../posts/utils';
 
 function PostDetailPage() {
   const { slug } = useParams<{ slug: string }>();
