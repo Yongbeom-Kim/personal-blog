@@ -5,29 +5,21 @@ date: '2025-09-02'
 excerpt: Welcome to my new blog! A quick introduction to what you'll find here, the tech stack powering this site, and some exciting topics I'm planning to explore.
 ---
 
-Well, here we are! After countless "I should really start a blog" moments, I've finally pulled the trigger and built this little corner of the internet. Welcome to my technical blog, where I'll be sharing thoughts, experiments, and learnings from my journey in web development.
+I told myself to start a blog many many times, but it was really only after a friend Karisse started her [own](https://karissekhoo.dev) that I truly found the motivation to build my own little corner of the internet.ments, and learnings from my journey in web development. I intend this to be both a place to share cool things, and a cool project in and as of itself.
 
-## What Powers This Blog
+## About this Blog
 
-Before diving into future content, let me give you a quick tour under the hood. This blog is built with a pretty sweet modern stack that I'm genuinely excited about:
+When it comes to software, I'm more of a do-it-myself kinda guy. I'm here to write code, not to play dependency lego, you know? For this reason, I'm starting *this* project with a minimalistic tech stack.
 
-### The Core Stack
+### The Current Stack
 
-- **React 19** with **TypeScript** - Because type safety is life, and React 19's new features are just *chef's kiss*
-- **Vite** - Lightning-fast development experience that makes webpack feel like dial-up internet
-- **React Router DOM 7** - Clean, declarative routing that just works
-- **Tailwind CSS** - Utility-first styling that's converted me from a CSS-in-JS skeptic to a believer
-- **MDX** - The perfect marriage of Markdown and React components
+This blog is a simple React/Vite + Typescript project, with Tailwind for styling and MDX for writing posts. It is *not* SEO-optimized, currently renders content client-side (CSR), and is probably the most bare-bones and unoptimized blog you might find on the internet.
 
-### The Architecture Philosophy
+I am self-hosting it on AWS, with a pretty basic stack as well. The domain is on Route53, and the blog is hosted on an S3 bucket with a Cloudfront CDN in front of it.
 
-I went for a minimalist, content-first approach inspired by Dan Abramov's [Overreacted](https://overreacted.io/). The whole thing is essentially a single-page application with clean URLs (`/` and `/posts/[slug]`) and dynamic imports using Vite's `import.meta.glob` for automatic post discovery.
+![aws-architecture](/aws-architecture.png "Really, nothing much to say here.")
 
-The best part? No build step needed when I add new posts. Just drop an MDX file in the posts folder, and it's automatically picked up. It's like magic, but the kind of magic that actually makes sense when you look at the code.
 
-### Design Decisions
-
-I've implemented a dual-theme system (light and dark) with CSS variables, keeping things ultra-minimal and readable. The color palette is carefully chosen - think linen and rich espresso for light mode, charcoal brown and parchment for dark mode. It's all about that cozy, readable vibe.
 
 ## What's Coming Next
 

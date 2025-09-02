@@ -1,6 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import HomePage from "./pages/HomePage";
-import PostPage from "./pages/PostPage";
+import PostPage from "./pages/post/PostPage";
 import { ThemeToggleSwitch, ThemeProvider } from "./theme";
 
 function App() {

@@ -21,7 +21,7 @@ const mdxPlugin: PluginOption = {
     })
     const vfile = new VFile({path: id, value: src})
     matter(vfile)
-    const frontMatter = vfile.data.matter
+    const frontMatter = vfile.data.matter as Record<string, any>
 
     let code: string = compiledCode.value instanceof Uint8Array ? compiledCode.value.toString() : compiledCode.value
     code = code.replace('export default function MDXContent', 'export function Content')
