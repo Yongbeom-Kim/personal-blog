@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { importAllPosts, type Post } from "../../posts/utils";
 import { Image } from "./mdx-components/Image";
 import { P } from "./mdx-components/P";
+import './styles/starry-night.css'
 
 function PostPage() {
   const { slug } = useParams<{ slug: string }>();

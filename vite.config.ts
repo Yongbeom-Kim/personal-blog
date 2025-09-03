@@ -1,5 +1,5 @@
 import { defineConfig, type PluginOption } from "vite";
-import { compile, compileSync } from "@mdx-js/mdx";
+import { compile } from "@mdx-js/mdx";
 import { VFile } from "vfile";
 import { matter } from "vfile-matter";
 
