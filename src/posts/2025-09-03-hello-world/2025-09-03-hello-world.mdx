@@ -5,27 +5,37 @@ date: "2025-09-03"
 excerpt: Hello World!
 ---
 
-I told myself to start a blog many many times, but it was really only after a friend Karisse started her [own](https://karissekhoo.dev) that I truly found the motivation to build my own little corner of the internet.ments, and learnings from my journey in web development. I intend this to be both a place to share cool things, and a cool project in and as of itself.
+I told myself to start a blog many many times, but it was really only after a friend Karisse started her [own](https://karissekhoo.dev) that I truly found the motivation to build my own little corner of the internet.
+
+I intend this to be both a place to share cool things, and a cool project in and as of itself.
 
 ## About this Blog
 
-When it comes to software, I'm more of a do-it-myself kinda guy. I'm here to write code, not to play dependency lego, you know? For this reason, I'm starting _this_ project with a minimalistic tech stack. I understand that this probably isn't the way most developers would go about self-hosting blogs, but it's just so much more interesting writing everything by yourself.
+When it comes to software, I'm more of a do-it-myself kinda guy. I'm here to write code, not to play dependency lego. 
+
+For this reason, I'm starting _this_ project with a minimalistic tech stack. I understand that this probably isn't the way most developers would go about hosting blogs, but it's just so much more interesting writing everything by yourself. 
+
+I do feel that fancy tools like Next.js and Astro that seem to hide everything away in a veneer of "abstraction".
 
 ### The Current Stack
 
-This blog is a simple React/Vite + Typescript project, with Tailwind for styling and MDX for writing posts. It is _not_ SEO-optimized, currently renders content client-side (CSR), and is probably the most bare-bones and unoptimized blog you might find on the internet.
+This blog is a simple React/Vite + Typescript project, with Tailwind for styling and MDX for writing posts. 
+
+It is _not_ SEO-optimized, currently renders content client-side (CSR), and is probably the most bare-bones and unoptimized blog you might find on the internet.
 
 Every article is written in an `.mdx` file, and Vite's `import.module.glob()` is helping me to collect every article at build time.
 
 The blog itself is hosted on AWS, with a pretty basic stack too. The domain is on Route53, and the blog is hosted on an S3 bucket with a Cloudfront CDN in front of it.
 
-![AWS architecture (Route53 pointing to Cloudfront, which points to S3 bucket)](aws-architecture.png "Really, nothing much to say here.")
+![AWS architecture (Route53 pointing to Cloudfront, which points to S3 bucket)](aws-architecture.png "Super simple AWS architecture.")
 
-I also have some funny little hacks as workarounds to solutions so far.
+I also have some funny little workarounds to some of the problems I ran into.
 
 #### MDX Frontmatter
 
-To be honest, I blame MDX's poor documentation for this. MDX's [documentation](https://mdxjs.com/docs/getting-started/) tells you to use the `mdx` plugin from `@mdx-js/rollup`, but it could not extract the markdown frontmatter I needed. After some frustration with the documentation (the [frontmatter guide](https://mdxjs.com/guides/frontmatter) was particularly useless), I decided to write the plugin myself.
+To be honest, I blame MDX's poor documentation for this. MDX's [documentation](https://mdxjs.com/docs/getting-started/) tells you to use the `mdx` plugin from `@mdx-js/rollup`, but it could not extract the markdown frontmatter I needed.
+
+After some frustration with the documentation (the [frontmatter guide](https://mdxjs.com/guides/frontmatter) was particularly useless), I decided to write the plugin myself.
 
 ```typescript
 // vite.config.ts
@@ -80,6 +90,15 @@ export function P(props: { children: ReactNode }) {
 }
 ```
 
-So there we go and here we are.
+## Conclusion
 
-I am starting from the most basic stack there is - just an Client-Side SPA React/Vite app, and I hope to slowly add features like SSR (and SEO), MPA, code splitting, etc.
+So that's it about this blog.
+
+I am starting from the most basic stack possible, a client-side SPA React/Vite app, and I plan to implement features that we all know and love most blogs for, such as SSR, some SEO optimizations, a proper Multi-Page Application (MPA) setup, and of course, FCP and bundle size optimizations.
+
+I suppose this blog is a project that serves as its own documentation. I hope to document every feature and optimization I implement, as well as every decision I make along the way. 
+
+I believe in understanding our tools and re-inventing the wheel, and that even when we stand on the shoulder of giants, we must all touch grass from time to time.
+
+Welcome to my little corner of the internet, where I build fun and interesting things.
+
