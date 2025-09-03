@@ -15,7 +15,7 @@ function PostSummaryItem({ frontmatter }: PostSummaryItemProps) {
           day: 'numeric'
         })}
       </time>
-      <h2 className="text-3xl md:text-2xl sm:text-xl font-extrabold m-0 mb-4 leading-tight tracking-tight">
+      <h2 className="text-3xl md:text-2xl sm:text-xl font-extrabold m-0 leading-tight tracking-tight">
         <Link 
           to={`/posts/${frontmatter.slug}`}
           className="text-text font-extrabold no-underline transition-colors duration-200 hover:text-primary"

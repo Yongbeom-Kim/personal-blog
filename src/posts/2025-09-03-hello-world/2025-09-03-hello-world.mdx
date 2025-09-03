@@ -1,19 +1,19 @@
 ---
 slug: 2025-09-03-hello-world
-title: Hello World
-date: '2025-09-03'
-excerpt: New blog, new me.
+title: New Blog, New Me
+date: "2025-09-03"
+excerpt: Hello World!
 ---
 
 I told myself to start a blog many many times, but it was really only after a friend Karisse started her [own](https://karissekhoo.dev) that I truly found the motivation to build my own little corner of the internet.ments, and learnings from my journey in web development. I intend this to be both a place to share cool things, and a cool project in and as of itself.
 
 ## About this Blog
 
-When it comes to software, I'm more of a do-it-myself kinda guy. I'm here to write code, not to play dependency lego, you know? For this reason, I'm starting *this* project with a minimalistic tech stack.
+When it comes to software, I'm more of a do-it-myself kinda guy. I'm here to write code, not to play dependency lego, you know? For this reason, I'm starting _this_ project with a minimalistic tech stack.
 
 ### The Current Stack
 
-This blog is a simple React/Vite + Typescript project, with Tailwind for styling and MDX for writing posts. It is *not* SEO-optimized, currently renders content client-side (CSR), and is probably the most bare-bones and unoptimized blog you might find on the internet.
+This blog is a simple React/Vite + Typescript project, with Tailwind for styling and MDX for writing posts. It is _not_ SEO-optimized, currently renders content client-side (CSR), and is probably the most bare-bones and unoptimized blog you might find on the internet.
 
 I am self-hosting it on AWS, with a pretty basic stack as well. The domain is on Route53, and the blog is hosted on an S3 bucket with a Cloudfront CDN in front of it.
 
@@ -67,17 +67,17 @@ Of course, right after I write this, I discover the plugin [`remark-mdx-frontmat
 
 Another thing I discovered was that MDX loves putting everything in paragraph tags. To support image captions, I decided to override my images with `<figure>` tags, and that gives you this problem:
 
-![Error message: In HTML, figure cannot be a descendant of p. This will cause a hydration error.](./figure-p-descendent-error-message.png "")
+![Error message: In HTML, figure cannot be a descendant of p. This will cause a hydration error.](./figure-p-descendent-error-message.png)
 
 Of course, the fix is to switch out all `<p>` tags with `<div>` tags.
 
 ```typescript
 // src/pages/post/mdx-components/P.tsx
 export function P(props: { children: ReactNode }) {
-  return <div className="mb-3">{props.children}</div>
+  return <div className="mb-3">{props.children}</div>;
 }
 ```
 
-## Wrapping Up
+So there we go and here we are.
 
-So there we go, my first step into blogging! I'm excited to share my journey, learnings, and insights with you all.
+I am starting from the most basic stack there is - just an Client-Side SPA React/Vite app, and I hope to slowly add features like SSR (and SEO), MPA, code splitting, etc.
