@@ -9,13 +9,15 @@ I told myself to start a blog many many times, but it was really only after a fr
 
 ## About this Blog
 
-When it comes to software, I'm more of a do-it-myself kinda guy. I'm here to write code, not to play dependency lego, you know? For this reason, I'm starting _this_ project with a minimalistic tech stack.
+When it comes to software, I'm more of a do-it-myself kinda guy. I'm here to write code, not to play dependency lego, you know? For this reason, I'm starting _this_ project with a minimalistic tech stack. I understand that this probably isn't the way most developers would go about self-hosting blogs, but it's just so much more interesting writing everything by yourself.
 
 ### The Current Stack
 
 This blog is a simple React/Vite + Typescript project, with Tailwind for styling and MDX for writing posts. It is _not_ SEO-optimized, currently renders content client-side (CSR), and is probably the most bare-bones and unoptimized blog you might find on the internet.
 
-I am self-hosting it on AWS, with a pretty basic stack as well. The domain is on Route53, and the blog is hosted on an S3 bucket with a Cloudfront CDN in front of it.
+Every article is written in an `.mdx` file, and Vite's `import.module.glob()` is helping me to collect every article at build time.
+
+The blog itself is hosted on AWS, with a pretty basic stack too. The domain is on Route53, and the blog is hosted on an S3 bucket with a Cloudfront CDN in front of it.
 
 ![AWS architecture (Route53 pointing to Cloudfront, which points to S3 bucket)](aws-architecture.png "Really, nothing much to say here.")
 
