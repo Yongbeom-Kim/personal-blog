@@ -1,4 +1,6 @@
 /* Source: https://github.com/wooorm/starry-night/blob/main/style/both.css */
+/* Why is this copy pasted? Because I use the data-theme attribute to switch between light and dark theme,
+   but the original CSS uses media queries. */
 
 /* This is a theme distributed by `starry-night`.
  * It’s based on what GitHub uses on their site.
@@ -36,7 +38,7 @@
   --color-prettylights-syntax-storage-modifier-import: #1f2328;
 }
 
-:root[data-theme=dark] {
+:root[data-theme="dark"] {
   --color-prettylights-syntax-brackethighlighter-angle: #9198a1;
   --color-prettylights-syntax-brackethighlighter-unmatched: #f85149;
   --color-prettylights-syntax-carriage-return-bg: #b62324;
