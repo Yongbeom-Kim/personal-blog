@@ -1,16 +1,10 @@
-import { useEffect, useLayoutEffect, useState } from "react";
+import { useEffect } from "react";
+
+import { useContext } from "react";
+import { ThemeContext } from "./theme-context";
 
 export function ThemeToggleSwitch() {
-  const [theme, setTheme] = useState("");
-
-  useLayoutEffect(() => {
-    const prefersDarkScheme = window.matchMedia("(prefers-color-scheme: dark)");
-    if (prefersDarkScheme.media === "not all") {
-      setTheme("light");
-    } else {
-      setTheme(prefersDarkScheme.matches ? "dark" : "light");
-    }
-  }, []);
+  const { theme, setTheme } = useContext(ThemeContext);
 
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", theme);

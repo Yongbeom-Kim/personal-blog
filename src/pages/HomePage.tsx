@@ -23,7 +23,7 @@ function HomePage() {
   }
   
   return (
-    <div>
+    <div className='mx-2'>
       <Header />
       
       <main className="mb-20">

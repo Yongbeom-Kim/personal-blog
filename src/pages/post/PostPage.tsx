@@ -44,7 +44,7 @@ function PostPage() {
 
   if (loading) {
     return (
-      <div className="max-w-[680px] mx-auto pt-10 px-5 pb-20 md:pt-10 md:px-5 md:pb-15">
+      <div className="mx-auto pt-10 px-5 pb-20 md:pt-10 md:px-5 md:pb-15">
         <div>Loading post...</div>
       </div>
     );
@@ -52,7 +52,7 @@ function PostPage() {
 
   if (error || !postData) {
     return (
-      <div className="max-w-[680px] mx-auto pt-10 px-5 pb-20 md:pt-5 md:px-4 md:pb-15">
+      <div className="mx-auto pt-10 px-5 pb-20 md:pt-5 md:px-4 md:pb-15">
         <Link
           to="/"
           className="inline-block mb-10 no-underline text-base font-medium text-primary hover:underline"
@@ -66,7 +66,7 @@ function PostPage() {
   }
 
   return (
-      <div className="max-w-[680px] mx-auto pt-10 px-5 pb-20 md:pt-5 md:px-4 md:pb-15">
+      <div className="mx-auto pt-10 px-5 pb-20 md:pt-5 md:px-4 md:pb-15">
         <Link
           to="/"
           className="inline-block mb-10 no-underline text-base font-medium text-primary hover:underline"

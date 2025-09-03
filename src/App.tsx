@@ -6,7 +6,7 @@ import { ThemeToggleSwitch, ThemeProvider } from "./theme";
 function App() {
   return (
     <ThemeProvider>
-      <div className="relative max-w-[680px] mx-auto px-5 leading-[1.7] text-md">
+      <div className="relative max-w-3xl mx-auto px-5 leading-[1.7] text-md">
         <ThemeToggleSwitch />
         <Routes>
           <Route path="/" element={<HomePage />} />
