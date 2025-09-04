@@ -23,7 +23,7 @@ function PostSummaryItem({ frontmatter }: PostSummaryItemProps) {
           {frontmatter.title}
         </Link>
       </h2>
-      <p className="text-lg md:text-base leading-relaxed text-text m-0 opacity-80">{frontmatter.excerpt}</p>
+      <p className="text-lg md:text-base leading-relaxed text-text m-0 opacity-80">{frontmatter.subtitle}</p>
     </article>
   )
 }

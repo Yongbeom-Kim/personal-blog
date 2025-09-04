@@ -67,7 +67,7 @@ src/
    slug: "my-new-post"
    title: "My New Post"
    date: "2024-01-15"
-   excerpt: "A brief description of the post"
+   subtitle: "A brief description of the post"
    ---
    ```
 3. Write your content in Markdown below the frontmatter

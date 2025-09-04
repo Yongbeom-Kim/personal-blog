@@ -2,7 +2,7 @@ export type PostFrontmatter = {
     slug: string;
     title: string;
     date: Date;
-    excerpt: string;
+    subtitle: string;
 }
 
 export type Post = {

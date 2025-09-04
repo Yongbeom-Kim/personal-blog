@@ -2,7 +2,7 @@
 slug: your-post-slug
 title: Your Post Title
 date: 'YYYY-MM-DD'
-excerpt: A brief description of your post that will appear in the post list and meta descriptions. Keep it concise and engaging.
+subtitle: A brief description of your post that will appear in the post list and meta descriptions. Keep it concise and engaging.
 ---
 
 # Your Post Title
