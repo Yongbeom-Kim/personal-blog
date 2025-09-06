@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { type PostFrontmatter } from '../../posts/utils';
+import { getSlug, type PostFrontmatter } from '../../posts/utils';
 
 type PostSummaryItemProps = {
   frontmatter: PostFrontmatter;
@@ -17,7 +17,7 @@ function PostSummaryItem({ frontmatter }: PostSummaryItemProps) {
       </time>
       <h2 className="text-3xl md:text-2xl sm:text-xl font-extrabold m-0 leading-tight tracking-tight">
         <Link 
-          to={`/posts/${frontmatter.slug}`}
+          to={`/posts/${getSlug(frontmatter)}`}
           className="text-text font-extrabold no-underline transition-colors duration-200 hover:text-primary"
         >
           {frontmatter.title}

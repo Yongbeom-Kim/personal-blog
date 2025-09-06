@@ -1,50 +1,23 @@
 ---
-slug: 2025-09-06-dark-light-theme
-title: SSR, Hydration errors, and why you're dark theme implementation is wrong.
+slug-suffix: dark-theme-ssr
+title: SSR, Hydration errors, and why your dark theme implementation is wrong.
 date: '2025-09-06'
 subtitle: unless you touch your index.html.
 ---
 
-When I was looking at the light/dark theme toggle in this blog, it occured to me that the way I'd always done it was not the right way. And likely, the majority of these guides on "how to implement dark theme" are also doing it incorrectly. 
+When I was looking at the light/dark theme toggle in this blog, it occured to me that the way I'd always done it was not the right way. And likely, the majority of guides on "how to implement dark theme" are also doing it incorrectly. 
 
 Particularly if you are using some kind of framework like Next.js where you do some kind of server-side rendering.
 
-## Some Background
+## The Core Issue
 
-This is probably the question to ask yourself. How do React's hooks work? When do they run?
+The fundamental problem lies in the gap between server-rendered HTML and client-side JavaScript execution.
 
-### Client-Side Rendering
+In client-side rendering (CSR), your browser downloads an empty HTML shell, fetches your React bundle, and then renders everything—simple, but slow for initial page loads and terrible for SEO.
 
-Now, if you've built a basic React application like the one you're on, you've probably done what is called "client-side rendering".
+Server-side rendering flips this. The server pre-renders your React components into HTML and sends that to the browser immediately. The user sees content instantly, then JavaScript "hydrates" to make it interactive.
 
-Here is how it goes.
-
-1. The browser makes a request.
-2. The browser downloads an "empty" HTML with some scripts and resources.
-3. The browser downloads your React application.
-4. The browser executes the React application.
-5. The React application renders the UI.
-
-Pretty simple, right? But if you use something like Next.js, how your UI gets rendered probably looks a little different.
-
-### Server-Side Rendering
-
-As you may know, the rendering is split into two parts.
-
-1. The browser makes a request.
-2. The server takes your "empty" HTML, and executes (some parts of) your React application, rendering the initial UI.
-3. The browser downloads the HTML file, and immediately renders the UI.
-4. The browser downloads the React application.
-5. The browser executes the React application.
-6. The React application hydrates the UI, and makes it interactive.
-
-The user now sees the initial UI much *faster*, because the HTML file comes with the initial UI. Even better, search engine crawlers can now see content properly and render your site.
-
-Now, step 2 can happen in many different ways. When you do it manually on your local machine and upload it to a CDN, it might be called static site generation (SSG). 
-
-Or you could cache the result from the server, and served the cached copy, which Next.js calls Incremental Static Regenration (ISR).
-
-But the gist is, you create the UI, and serve it to the user.
+This creates a critical window where the server's assumptions about your app state (like theme preference) might not match the client's reality. This can cause a jarring flash when React realizes it got things wrong and re-renders with the correct theme.
 
 ## The Problem
 
@@ -78,85 +51,23 @@ export function useTheme() {
 }
 ```
 
-### SSR and State
+### The FOUC Problem
 
-When we do any kind of server-side rendering, we run in to a fundamental issue.
+When you render UI on the server, the server has no access to `localStorage`, `window.matchMedia`, or any client-specific state. It must make essentially guess - typically defaulting to light theme.
 
-When you render the initial UI on the server, the server can't possibly know the user's theme preference, or the system preference. Should we have the initial UI as light, or dark theme?
+The problem unfolds during hydration:
 
-Let's go through the SSR steps once again, focusing on the theme issue.
+1. Server renders HTML with light theme (its best guess)
+2. Browser displays this HTML immediately  
+3. JavaScript loads and React checks `localStorage`, and discovers user prefers dark
+4. React re-renders with dark theme, causing a visible flash
 
-1. The browser makes a request.
-2. The server renders the initial UI **but doesn't know the user's theme preference, so it defaults to light.**
-3. The browser downloads the HTML file, and immediately renders the UI.
-4. The browser downloads the React application.
-5. The browser executes the React application. It goes *whoops, it's supposed be dark all along!*
-6. Your React application quickly switches the theme to the correct one.
-7. The React application hydrates the UI, and makes it interactive.
-
-See the issue here? You just blinded a poor dude for half a second. This visual inconsistency is also commonly called a **Flash of Unstyled Content (FOUC)**. Some libraries will give you a hydration error as well.
+This visual inconsistency is called a **Flash of Unstyled Content (FOUC)**, when a page briefly displays the wrong theme before correcting itself. This creates a jarring user experience and may trigger hydration errors in some frameworks.
 
 The Material UI documentation has a very good gif to show this issue.
 
 ![Illustration of dashboard in light mode, then flashing dark.](./dark-mode-flicker-mui.gif "Source: https://mui.com/material-ui/customization/dark-mode/#the-problem")
 
-
-
-## A Common Pitfall
-
-One intuitive solution is to delay rendering the app until the theme is determined. Something like this:
-
-```tsx
-export const WrapperAroundYourApp = () => {
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  if (!mounted)
-    return <LoadingScreen />;
-
-  return (
-    <ThemeContext>
-      <App />
-    </ThemeContext>
-  )
-}
-```
-
-Or you can lazy-load your component:
-
-```tsx
-const App = lazy(() => import('./App'));
-
-export const WrapperAroundYourApp = () => {
-  return (
-    <ThemeContext>
-      <Suspense fallback={<LoadingScreen />}>
-        <App />
-      </Suspense>
-    </ThemeContext>
-  )
-}
-```
-
-This is a **bad solution**. The problem with this approach is that a you will completely negate the benefits of server-side rendering. Let's take a look again at the rendering steps now:
-
-1. The browser makes a request.
-2. The server renders the initial UI. *But the elements that need the theme will not be rendered, either due to lazy loading or an if condition.*
-3. The browser downloads the HTML file, and immediately renders the UI. *But again, the majority of your UI is still not rendered.*
-4. The browser downloads the React application.
-5. The browser executes the React application.
-6. The React application hydrates the UI, and makes it interactive.
-
-So, we render a minimal UI on the server-side, and fetch the React application to render the main UI. Doesn't this look identical to client-side rendering? 
-
-We lose **all** the benefits of server-side rendering here. The user does not see the UI until we download the JavaScript bundles, and your site cannot be indexed by search engines. 
-
-In fact, the lazy loading solution will probably have even *worse* performance than your normal CSR, because your critical resources are now considered low-priority.
-
-It is okay to defer rendering, or lazy load non-critical components. But likely, your theme context will span the entire application, and these workarounds are almost equivalent to disabling SSR entirely.
 
 ## Some Solutions
 
@@ -180,6 +91,7 @@ Your `index.html` may look like this:
     <meta name="color-scheme" content="light dark" />
     <link rel="icon" type="image/svg+xml" href="/corgi_circle_144x144.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Must by SYNCHRONOUS. No defer or async.-->
     <script>
       (function(){
         const theme = localStorage.getItem('theme')
@@ -204,14 +116,13 @@ export function ThemeProvider({ children }) {
   const [theme, _setTheme] = useState('light');
 
   useEffect(() => {
-    const theme = document.documentElement.getAttribute('data-theme');
-    setTheme(theme);
+    _setTheme(document.documentElement.getAttribute('data-theme'));
   }, []);
 
-  const setTheme = (theme) => {
-    _setTheme(theme);
-    document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem('theme', theme);
+  const setTheme = (newTheme) => {
+    _setTheme(newTheme);
+    document.documentElement.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
   }
 
   return (
@@ -252,7 +163,7 @@ There you go, no FOUC.
 
 #### The Catch
 
-The *catch* to this approach is that your theming **must go through CSS**. If you have some code like this:
+The *catch* to this approach is that your theming **must go through CSS**. If you have JavaScript logic that conditionally renders different components based on theme, you're back to square one:
 
 ```js
 const SomeComponent = () => {
@@ -264,7 +175,28 @@ const SomeComponent = () => {
 }
 ```
 
-We are back to square one, because now the React application is only rendered correctly *after* the initial DOM render.
+This breaks because React needs to hydrate before it knows the theme, causing the same flash.
+
+**Restructuring strategies:**
+
+1. **Move logic to CSS**: Instead of conditional rendering, use CSS to show/hide elements:
+   ```css
+   .light-only { display: block; }
+   .dark-only { display: none; }
+   
+   [data-theme='dark'] .light-only { display: none; }
+   [data-theme='dark'] .dark-only { display: block; }
+   ```
+
+2. **Use CSS custom properties for dynamic values**: Replace JavaScript calculations with CSS:
+   ```css
+   :root { --sidebar-width: 240px; }
+   [data-theme='dark'] { --sidebar-width: 280px; }
+   ```
+
+3. **Defer non-critical theme-dependent logic**: Keep essential UI theme-agnostic, lazy-load complex theme-dependent features after hydration.
+
+When the blocking script approach becomes insufficient—typically in apps with heavy theme-dependent rendering logic—the cookie approach becomes necessary despite its caching complexity.
 
 ### 2. Use a Cookie
 
@@ -280,8 +212,9 @@ export function ThemeProvider({ children }) {
 
   const setTheme = (newTheme) => {
     _setTheme(newTheme);
-    // Set cookie with proper attributes
-    document.cookie = `theme=${newTheme}; path=/; max-age=31536000; SameSite=Lax`;
+    // Set cookie
+    const encodedTheme = encodeURIComponent(newTheme);
+    document.cookie = `theme=${encodedTheme}; path=/; max-age=31536000; SameSite=Lax; Secure`;
     // Update data-theme attribute for CSS theming
     document.documentElement.setAttribute('data-theme', newTheme);
   };
@@ -294,7 +227,7 @@ export function ThemeProvider({ children }) {
       ?.split('=')[1];
     
     if (cookieValue) {
-      setTheme(cookieValue);
+      setTheme(decodeURIComponent(cookieValue));
     } else {
       // Fallback to system preference if no cookie
       const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -315,15 +248,34 @@ Next, you need to configure your SSR server to receive the cookie correctly, and
 
 Your cookie also needs to have `SameSite=Lax` enabled, so that it will be sent with cross-site requests.
 
-While you will not be able to cache your pages with this approach, this is a far more comprehensive solution, because it guarantees that the theme will be resolved correctly on the server every time.
+This approach comes with some caching implications. Particularly, pages now vary per user preference—dark theme users need different HTML than light theme users. This breaks your ability to do simple static caching.
 
-We *cannot* cache the rendered HTML because pages now vary per user preference—a user with dark theme preference needs different HTML than a user with light theme preference. This breaks static caching at the CDN level unless you segment by cookie values.
+Your CDN must now cache multiple variants of each page, or you lose the caching benefits entirely. Some solutions are:
+
+1. Configure your CDN to cache variants by cookie value:
+   ```
+   Vary: Cookie
+   Cache-Key: url + theme-cookie-value
+   ```
+2. Use an additional proxy to modify HTML dynamically:
+   ```js
+   // Pseudo-code: inject theme script based on cookie
+   if (request.cookies.theme === 'dark') {
+     return modifyHTML(response, 'dark')
+   }
+   ```
+
+This caching complexity is why many developers prefer the blocking script approach despite its CSS limitations.
 
 So, here are the two solutions. You can either insert a blocking script, or transmit the theme preference as a cookie. Or I suppose it does not matter if you're on CSR.
 
 ## How do libraries do it?
 
-### `next-themes`
+Libraries typically fall into two categories: those that **avoid FOUC out of the box** by injecting blocking scripts, and those that **provide hooks only** and leave FOUC prevention to you.
+
+### Libraries that avoid FOUC out of the box
+
+#### `next-themes`
 
 `next-themes` injects a script on the server-side with a `dangerouslySetInnerHTML` attribute, on the [`<ThemeScript>`](https://github.com/pacocoursey/next-themes/blob/main/next-themes/src/index.tsx#L187) element. The script looks like this:
 
@@ -383,11 +335,11 @@ export const script = (
 }
 ```
 
-### Material UI
+#### Material UI
 
 Material UI also uses a similar [approach](https://github.com/mui/material-ui/blob/master/packages/mui-system/src/InitColorSchemeScript/InitColorSchemeScript.tsx) to inject the script:
 
-```tsx
+```jsx
 export default function InitColorSchemeScript(options?: InitColorSchemeScriptProps) {
   // lots of logic here
   return (
@@ -395,8 +347,6 @@ export default function InitColorSchemeScript(options?: InitColorSchemeScriptPro
       key="mui-color-scheme-init"
       suppressHydrationWarning
       nonce={typeof window === 'undefined' ? nonce : ''}
-
-      // INJECT SCRIPT FOR THEME!!
       // eslint-disable-next-line react/no-danger
       dangerouslySetInnerHTML={{
         __html: `(function() {
@@ -430,22 +380,52 @@ try {
 }
 ```
 
-### Radix, Tailwind, Mantine
+### Libraries that provide hooks
 
-Libraries like Radix, Tailwind, and Mantine are unopinionated about where the dark mode comes from. 
+Other libraries give you theming utilities but require you to implement FOUC prevention yourself.
 
-In Radix, you can append any class names to the root element. Tailwind, on the other hand, lets you write your own CSS selectors to determine the dark mode. 
+#### Tailwind CSS
 
-Mantine uses the [`light-dark`](https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/light-dark) CSS function to determine styles for light and dark mode. 
+**Tailwind CSS** pairs well with the blocking script approach. By default, its `:dark` selector uses the `prefers-color-scheme` media query, but you can override it with your own custom selector.
+
+You can define dark styles in tailwind.config.js, and also write css queries such as `@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));` to generates something like:
+
+```css
+.dark\:SOME-UNIQUE-IDENTIFIER:where([data-theme="dark"], [data-theme="dark"] *) {
+  some: style;
+}
+```
+
+Your blocking script can sets `class="dark"` on the root element, and Tailwind handles the rest.
+
+#### Radix UI
+
+**Radix UI** provides unstyled components that accept theme classes. Combine with CSS custom properties:
+
+```css
+:root { --radix-colors-bg: white; }
+.dark { --radix-colors-bg: black; }
+```
+
+#### Mantine
+
+**Mantine** uses the more modern [`light-dark()`](https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/light-dark) CSS function, which respects the `color-scheme` property:
+
+```css
+.mantine-button { 
+  background: light-dark(white, black); 
+}
+```
+
+Set `color-scheme: dark` in your blocking script, and Mantine automatically adapts. This approach has excellent browser support and eliminates the need for class-based theming entirely. 
 
 ## Conclusion
 
-So there we have it. The notion of this separate state between client and server during server-side rendering is not just a problem for light/dark mode, it is a problem *anytime* your UI render depends on any kind of state, and is the reason why some state management libraries like Jotai have [hooks](https://jotai.org/docs/utilities/ssr) specifically for SSR.
+The FOUC problem extends far beyond theming—any client-specific state (locale, feature flags, A/B tests, device preferences) faces the same fundamental challenge.
 
-Technically, there are two solutions.
-1. **Use a blocking script** - It is the simplest solution, and works great if you can stick to CSS-based theming.
-2. **Pass the theme as a cookie** - It is much more complex, but gives you full flexibility. But it has implications for your cache architecture.
+Fudamentally, there are three solutions to the FOUC SSR problem:
+1. **Client-side deferral**: Render affected components only after hydration
+2. **Blocking scripts**: Apply state before initial render using inline JavaScript
+3. **Server state transmission**: Send client state to server (typically via cookies)
 
-It seems that most popular libraries like `next-themes` and Material UI have settled on the blocking script approach, and for good reason. We have great support for light/dark mode in CSS, and it is very easy to implement.
-
-I hope this serves as a good introduction to state management in SSR. Any client-specific state—locale, feature flags, AB tests, device preferences, come with the same considerations. We should understand why SSR came about in the first place, and the considerations behind each solution.  
+Understanding this tradeoff, rendering accuracy versus caching complexity is fundamental to building robust SSR applications.
