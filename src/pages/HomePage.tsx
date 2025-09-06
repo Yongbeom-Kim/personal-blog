@@ -27,7 +27,7 @@ function HomePage() {
       <Header />
       
       <main className="mb-20">
-        {posts.map((post) => (
+        {posts.filter((post) => post.frontmatter.date <= new Date()).map((post) => (
           <PostSummaryItem key={getSlug(post.frontmatter)} frontmatter={post.frontmatter} />
         ))}
       </main>
