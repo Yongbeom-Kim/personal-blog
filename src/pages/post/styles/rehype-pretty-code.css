@@ -1,0 +1,31 @@
+.diff-add {
+    background-color: rgba(46, 160, 67, 0.3);
+    position: relative;
+}
+
+.diff-remove {
+    background-color: rgba(248, 81, 73, 0.3);
+    position: relative;
+}
+
+.diff-add::before {
+    content: '+';
+    padding-left: 0.3rem;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+}
+
+.diff-remove::before {
+    content: '-';
+    padding-left: 0.3rem;
+    position: absolute;
+    left: 0;
+    bottom: 0;  
+}
+
+pre [data-line] {
+    padding: 0.08rem;
+    padding-left: 1.3rem;
+    padding-right: 0.5rem;
+}

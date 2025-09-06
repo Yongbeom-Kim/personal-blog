@@ -6,9 +6,10 @@ import { matter } from "vfile-matter";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import remarkFrontmatter from "remark-frontmatter";
-import rehypeMdxImportMedia from 'rehype-mdx-import-media'
-import rehypeStarryNight from 'rehype-starry-night'
-
+import rehypeMdxImportMedia from "rehype-mdx-import-media";
+// import rehypeStarryNight from 'rehype-starry-night'
+import rehypePrettyCode from "rehype-pretty-code";
+import { transformerNotationDiff } from "@shikijs/transformers";
 
 const mdxPlugin: PluginOption = {
   name: "mdx-plugin",
@@ -22,7 +23,20 @@ const mdxPlugin: PluginOption = {
     }
     const compiledCode = await compile(src, {
       remarkPlugins: [remarkFrontmatter],
-      rehypePlugins: [rehypeStarryNight, rehypeMdxImportMedia]
+      rehypePlugins: [
+          [
+            rehypePrettyCode,
+            {
+              theme: 'github-dark',
+              transformers: [transformerNotationDiff({
+                classLineAdd: 'diff-add',
+                classLineRemove: 'diff-remove',
+              })],
+              grid: false,
+            },
+          ],
+        rehypeMdxImportMedia,
+      ],
     });
     const vfile = new VFile({ path: id, value: src });
     matter(vfile);

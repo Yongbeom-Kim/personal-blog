@@ -7,7 +7,7 @@ terraform {
   }
 }
 
-module "main" {
+module "prod" {
     source = "./terraform"
     website_s3_bucket = "blog.yongbeom.com-bucket"
     cloudfront_cache_policy_name = "yongbeom-com-personal-blog-cache-policy"
@@ -15,10 +15,27 @@ module "main" {
     full_domain = "blog.yongbeom.com"
 }
 
+module "staging" {
+    source = "./terraform"
+    website_s3_bucket = "blog.yongbeom.com-bucket-staging"
+    cloudfront_cache_policy_name = "yongbeom-com-personal-blog-cache-policy-staging"
+    base_domain = "yongbeom.com"
+    full_domain = "staging.blog.yongbeom.com"
+}
+
 output "s3_bucket_name"{
-    value = module.main.s3_bucket_name
+    value = module.prod.s3_bucket_name
 }
 
 output "cloudfront_distribution_id"{
-    value = module.main.cloudfront_distribution_id
+    value = module.prod.cloudfront_distribution_id
+}
+
+
+output "staging_s3_bucket_name"{
+    value = module.staging.s3_bucket_name
+}
+
+output "staging_cloudfront_distribution_id"{
+    value = module.staging.cloudfront_distribution_id
 }
