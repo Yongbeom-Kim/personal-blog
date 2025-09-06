@@ -1,13 +1,13 @@
 ---
 slug-suffix: dark-theme-ssr
 title: SSR, Hydration errors, and why your dark theme implementation is wrong.
-date: '2025-09-06'
+date: '2025-09-08'
 subtitle: unless you touch your index.html.
 ---
 
-When I was looking at the light/dark theme toggle in this blog, it occured to me that the way I'd always done it was not the right way. And likely, the majority of guides on "how to implement dark theme" are also doing it incorrectly. 
+When I was looking at the light/dark theme toggle in this blog, it occured to me that the way I'd always done it was not the right way. And likely, the majority of guides on "how to implement dark theme" are also doing it incorrectly.
 
-Particularly if you are using some kind of framework like Next.js where you do some kind of server-side rendering.
+It might seem really trivial, but I was surprised at how easy it is to get it wrong, and I'm particularly surprised that the go-to for many is to use a library like `next-themes`.
 
 ## The Core Issue
 
@@ -380,13 +380,13 @@ try {
 }
 ```
 
-### Libraries that provide hooks
+### Libraries with utilities
 
 Other libraries give you theming utilities but require you to implement FOUC prevention yourself.
 
 #### Tailwind CSS
 
-**Tailwind CSS** pairs well with the blocking script approach. By default, its `:dark` selector uses the `prefers-color-scheme` media query, but you can override it with your own custom selector.
+Tailwind CSS pairs well with the blocking script approach. By default, its `:dark` selector uses the `prefers-color-scheme` media query, but you can override it with your own custom selector.
 
 You can define dark styles in tailwind.config.js, and also write css queries such as `@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));` to generates something like:
 
@@ -400,7 +400,7 @@ Your blocking script can sets `class="dark"` on the root element, and Tailwind h
 
 #### Radix UI
 
-**Radix UI** provides unstyled components that accept theme classes. Combine with CSS custom properties:
+Radix UI provides unstyled components that accept theme classes. Combine with CSS custom properties:
 
 ```css
 :root { --radix-colors-bg: white; }
@@ -409,7 +409,7 @@ Your blocking script can sets `class="dark"` on the root element, and Tailwind h
 
 #### Mantine
 
-**Mantine** uses the more modern [`light-dark()`](https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/light-dark) CSS function, which respects the `color-scheme` property:
+Mantine uses the more modern [`light-dark()`](https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/light-dark) CSS function, which respects the `color-scheme` property:
 
 ```css
 .mantine-button { 
