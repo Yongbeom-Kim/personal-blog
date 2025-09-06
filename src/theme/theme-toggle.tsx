@@ -24,11 +24,13 @@ export function ThemeToggleSwitch() {
     >
       <div 
         aria-hidden="true" 
-        className={`relative transition-all duration-300 ${
-          theme === "light" 
-            ? "w-6 h-6 bg-[#2c2520] rounded-full before:content-[''] before:absolute before:top-0 before:left-2 before:w-6 before:h-6 before:bg-[#f5f0e8] before:rounded-full before:shadow-none" 
-            : "w-6 h-6 bg-[#f5f0e8] rounded-full"
-        }`}
+        className={`relative transition-all duration-300
+          w-6 h-6 bg-[#2c2520] rounded-full before:content-[''] before:absolute before:top-0 before:left-2 before:w-6 before:h-6 before:bg-[#f5f0e8] before:rounded-full before:shadow-none
+          dark:bg-[#f5f0e8] dark:before:content-none
+          `}
+          // theme === "light" 
+          //   ? "w-6 h-6 bg-[#2c2520] rounded-full before:content-[''] before:absolute before:top-0 before:left-2 before:w-6 before:h-6 before:bg-[#f5f0e8] before:rounded-full before:shadow-none" 
+          //   : "w-6 h-6 bg-[#f5f0e8] rounded-full"
       >
       </div>
     </button>
