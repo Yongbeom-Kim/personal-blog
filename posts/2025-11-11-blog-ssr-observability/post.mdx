@@ -1,7 +1,7 @@
 ---
 slug-suffix: blog-ssr-observability
 title: 'Blog Update: SSR and Observability'
-date: '2025-09-11'
+date: '2025-11-11'
 subtitle: 
 ---
 
@@ -19,7 +19,7 @@ Vite provides it's own server-side rendering (SSR) feature, which allows you to 
 
 ### Staging Environment
 
-Speaking of which, it is about time I have a staging environment ([staging.blog.yongbeom.com](https://staging.blog.yongbeom.com)) to test the new SSR architecture, so we will quickly do it:
+Speaking of which, it is about time I have a staging environment ([staging.blog.yongbeom.com](https://staging.blog.yongbeom.com)) to test the new SSR architecture, so we will quickly do it (yay, opentofu!):
 
 `main.tf`
 ```diff 
@@ -47,4 +47,12 @@ Previously, our AWS architecture was pretty simple. It consisted of an S3 bucket
 I can either put the SSR server before (Lambda@Edge / CloudFront Functions), or after the CloudFront distribution as a normal Lambda function.
 
 ![Architecture](./aws-arch-draft.png)
+
+Given that a blog fundamentally has the majority of its content is *static*, it benefits significantly from CDN caching. Therefore, we will put the SSR server after the CloudFront distribution. If our blog had some dynamic content, we may have chosen to put the SSR server *before* the CloudFront distribution.
+
+In addition, this allows the browser to get cached HTML directly from CloudFront, which significantly improves the blog's performance.
+
+### SSR Server
+
+The SSR server is a simple Node.js server that renders the blog posts and returns the HTML to the client. It is deployed as a Lambda function.
 

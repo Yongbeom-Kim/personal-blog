@@ -3,26 +3,33 @@ variable "cloudfront_cache_policy_name" {
   description = "Name of the CloudFront cache policy for the website."
 }
 
-resource "aws_cloudfront_origin_access_identity" "frontend" {
-  comment = "Access identity for the frontend S3 bucket."
+variable "cloudfront_function_name" {
+  type = string
+  description = "Name of the CloudFront function for the website."
 }
 
 resource "aws_cloudfront_distribution" "frontend" {
   origin {
-    s3_origin_config {
-      origin_access_identity = aws_cloudfront_origin_access_identity.frontend.cloudfront_access_identity_path
-    }
-    domain_name = aws_s3_bucket.frontend.bucket_domain_name
-    origin_id   = aws_s3_bucket_website_configuration.frontend.website_endpoint
+    origin_access_control_id = aws_cloudfront_origin_access_control.s3.id
+    domain_name = aws_s3_bucket.frontend.bucket_regional_domain_name
+    origin_id   = "origin-${aws_s3_bucket.frontend.bucket_regional_domain_name}"
   }
 
+  enabled = true
+  http_version        = "http2"
+  default_root_object = "index.html"
   default_cache_behavior {
     compress               = true
     viewer_protocol_policy = "redirect-to-https"
     allowed_methods        = ["GET", "HEAD"]
     cached_methods         = ["GET", "HEAD"]
     cache_policy_id        = aws_cloudfront_cache_policy.caching_optimized.id
-    target_origin_id       = aws_s3_bucket_website_configuration.frontend.website_endpoint
+    target_origin_id       = "origin-${aws_s3_bucket.frontend.bucket_regional_domain_name}"
+
+    function_association {
+      event_type = "viewer-request"
+      function_arn = aws_cloudfront_function.main.arn
+    }
   }
 
   price_class = "PriceClass_200"
@@ -33,19 +40,12 @@ resource "aws_cloudfront_distribution" "frontend" {
     ssl_support_method  = "sni-only"
   }
 
-  http_version        = "http2"
-  default_root_object = "index.html"
-
   restrictions {
     geo_restriction {
       restriction_type = "none"
       locations        = []
     }
   }
-
-  enabled = true
-
-
 }
 
 resource "aws_cloudfront_cache_policy" "caching_optimized" {
@@ -102,6 +102,45 @@ resource "aws_route53_record" "verification_records" {
   ttl             = 60
   type            = each.value.type
   zone_id         = data.aws_route53_zone.main.zone_id
+}
+
+variable "aws_cloudfront_kvstore_name" {
+  type = string
+  description = "Name of the CloudFront key value store for the website."
+}
+resource "aws_cloudfront_key_value_store" "main" {
+  name = var.aws_cloudfront_kvstore_name
+}
+
+resource "aws_cloudfrontkeyvaluestore_key" "main" {
+  key_value_store_arn = aws_cloudfront_key_value_store.main.arn
+  key = "s3_domain"
+  value = aws_s3_bucket.frontend.bucket_regional_domain_name
+}
+
+
+resource "aws_cloudfront_function" "main" {
+  name = var.cloudfront_function_name
+  code = file("${path.root}/cloudfront-function/index.js")
+  runtime = "cloudfront-js-2.0"
+  comment = "Cloudfront function for routing requests"
+  publish = true
+  key_value_store_associations = [
+    aws_cloudfront_key_value_store.main.arn
+  ]
+
+  # create before destroy gives name conflict
+  lifecycle {
+    create_before_destroy = false
+  }
+}
+
+resource "aws_cloudfront_origin_access_control" "s3" {
+  name                              = "var.cloudfront_origin_access_control_name"
+  description                       = "Origin access control for S3 bucket"
+  origin_access_control_origin_type = "s3"
+  signing_behavior                  = "always"
+  signing_protocol                  = "sigv4"
 }
 
 output "cloudfront_distribution_id" {
