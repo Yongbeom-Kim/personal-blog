@@ -27,7 +27,7 @@ docker build -t personal-blog-server .
 docker tag personal-blog-server:latest ${ecr_repository_url}:latest
 docker push ${ecr_repository_url}:latest
 
-image_digest=$(aws ecr describe-images --repository-name personal-blog-server-staging --query 'imageDetails[0].imageDigest' --output text)
+image_digest=$(aws ecr describe-images --repository-name personal-blog-server-staging --image-ids '[{"imageTag":"latest"}]' --query 'imageDetails[0].imageDigest' --output text)
 printf "\033[1;37mImage digest: \033[0m\033[33;1m${image_digest}\033[0m\n"
 
 tofu apply -var="lambda_image_uri=${ecr_repository_url}@${image_digest}" -auto-approve

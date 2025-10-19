@@ -16,7 +16,6 @@ export default defineConfig({
     __SSR__: false,
   },
   server: {
-    open: "index-csr.html",
     proxy: {
       '/api': {
         target: 'http://localhost:3000',
@@ -44,7 +43,7 @@ export default defineConfig({
   },
   build: {
     rollupOptions: {
-      input: resolve(__dirname, '../index-csr.html'),
+      input: resolve(__dirname, '../index.html'),
     },
     outDir: 'dist/csr',
   },

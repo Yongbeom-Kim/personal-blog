@@ -28,16 +28,10 @@ resource "aws_iam_role_policy_attachment" "lambda_basic_execution" {
   role       = aws_iam_role.lambda_execution_role.name
 }
 
-# # ECR Authorization Token
-# data "aws_ecr_authorization_token" "token" {}
-
-
-# Lambda Function with dummy container initially
 resource "aws_lambda_function" "backend" {
   function_name = var.lambda_function_name
   role         = aws_iam_role.lambda_execution_role.arn
   
-  # Use a dummy public ECR image initially
   package_type = "Image"
   image_uri    = var.lambda_image_uri
   
@@ -48,10 +42,6 @@ resource "aws_lambda_function" "backend" {
     variables = {
       NODE_ENV = "production"
     }
-  }
-
-  lifecycle {
-    ignore_changes = [image_uri]
   }
 }
 
