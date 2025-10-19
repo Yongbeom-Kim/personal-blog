@@ -85,8 +85,14 @@ Of course, the fix is to switch out all `<p>` tags with `<div>` tags.
 
 ```typescript
 // src/pages/post/mdx-components/P.tsx
-export function P(props: { children: ReactNode }) {
-  return <div className="mb-3">{props.children}</div>;
+export function P(
+  props: { children: ReactNode }
+) {
+  return (
+    <div className="mb-3">
+      {props.children}
+    </div>
+    );
 }
 ```
 
