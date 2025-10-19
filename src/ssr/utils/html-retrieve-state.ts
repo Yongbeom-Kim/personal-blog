@@ -9,10 +9,10 @@ let ssrState: SsrStateData | null = null
 
 export const retrieveSsrState = (): SsrStateData => {
     if (ssrState) return ssrState
-    const divElement = document.getElementById(SSR_STATE_ELEMENT_ID)
-    if (!divElement)
+    const el = document.getElementById(SSR_STATE_ELEMENT_ID)
+    if (!el)
         throw new Error("SSR state element not found in the DOM")
-    ssrState = JSON.parse(decodeURI(divElement.textContent || "") || "{}")
-    divElement?.remove()
+    ssrState = JSON.parse(el.textContent || "{}")
+    el?.remove()
     return ssrState!
 }

@@ -16,6 +16,7 @@ export const readHtml = (path: string = html_path) => readFileSync(path).toStrin
 export const injectSsrEntry = (html: string, ssrEntry: string) => html.replace("<!-- SSR ENTRY -->", ssrEntry);
 
 export const injectSsrState = (html: string, state: SsrStateData): string => {
-    const div = `<script type="application/json" id=${SSR_STATE_ELEMENT_ID}>${encodeURI(JSON.stringify(state))}</script>`
+    const safeJson = JSON.stringify(state).replace(/</g, "\\u003c");
+    const div = `<script type="application/json" id=${SSR_STATE_ELEMENT_ID}>${safeJson}</script>`
     return html.replace('</head>', `${div}</head>`)
 }
