@@ -50,7 +50,7 @@ resource "aws_cloudfront_distribution" "frontend" {
 # Only works becaues deploy script invalidates all cache
 resource "aws_cloudfront_cache_policy" "infinite_cache" {
   name        = var.cloudfront_cache_policy_name
-  min_ttl     = 31536000
+  min_ttl     = 31536000 # 1 year 
   max_ttl     = 31536000
   default_ttl = 31536000
 

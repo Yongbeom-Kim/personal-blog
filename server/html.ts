@@ -15,27 +15,7 @@ export const readHtml = (path: string = html_path) => readFileSync(path).toStrin
 
 export const injectSsrEntry = (html: string, ssrEntry: string) => html.replace("<!-- SSR ENTRY -->", ssrEntry);
 
-export type MetaTag = {
-    name: string;
-    content: string;
-} | {
-    property: string;
-    content: string;
-}
-
-export const injectMetaTags = (html: string, metaTags: MetaTag[]) => {
-    const metaTagsHtml = metaTags.map(tag => {
-        if ('name' in tag) {
-            return `<meta name="${tag.name}" content="${tag.content}">`;
-        } else {
-            return `<meta property="${tag.property}" content="${tag.content}">`;
-        }
-    }).join('\n');
-    
-    return html.replace('</head>', `${metaTagsHtml}\n</head>`);
-}
-
 export const injectSsrState = (html: string, state: SsrStateData): string => {
-    const div = `<script type="application/json" id=${SSR_STATE_ELEMENT_ID}>${JSON.stringify(state)}</script>`
+    const div = `<script type="application/json" id=${SSR_STATE_ELEMENT_ID}>${encodeURI(JSON.stringify(state))}</script>`
     return html.replace('</head>', `${div}</head>`)
 }

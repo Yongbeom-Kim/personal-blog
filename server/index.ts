@@ -8,21 +8,27 @@ import path, { dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { injectSsrState } from "./html";
 import { SSR_POST_CONTENT_KEY } from "../src/ssr/utils/constants";
+import { insertMetadata } from "./metadata/insert";
+import { getHomepageMetadata } from "./metadata/home-page";
+import { getPostPageMetadata } from "./metadata/post-page";
 
 const app = express();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
+
 app.get("/", async (_, res) => {
   const template = readHtml();
   const postsSummary = await getPostsSummary();
   const html = renderApp("/", {
     postsSummary,
   });
-  const htmlWithSsrEntry = injectSsrEntry(template, html);
+  const templateWithMetadata = insertMetadata(template, getHomepageMetadata());
+  const htmlWithSsrEntry = injectSsrEntry(templateWithMetadata, html);
   const finalHtml = injectSsrState(htmlWithSsrEntry, {
     postsSummary,
   });
+
   res.send(finalHtml);
 });
 
@@ -32,7 +38,8 @@ app.get("/posts/:slug", async (req, res) => {
   const html = renderApp(`/posts/${req.params.slug}`, {
     [SSR_POST_CONTENT_KEY]: postData,
   });
-  const finalHtml = injectSsrEntry(template, html);
+  const templateWithMetadata = insertMetadata(template, getPostPageMetadata(req.params.slug, postData));
+  const finalHtml = injectSsrEntry(templateWithMetadata, html);
   const ssrStateTagsHtml = injectSsrState(finalHtml, {
     [SSR_POST_CONTENT_KEY]: postData,
   });

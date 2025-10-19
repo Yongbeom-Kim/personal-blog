@@ -12,7 +12,7 @@ export const retrieveSsrState = (): SsrStateData => {
     const divElement = document.getElementById(SSR_STATE_ELEMENT_ID)
     if (!divElement)
         throw new Error("SSR state element not found in the DOM")
-    ssrState = JSON.parse(divElement.textContent || "{}")
+    ssrState = JSON.parse(decodeURI(divElement.textContent || "") || "{}")
     divElement?.remove()
     return ssrState!
 }

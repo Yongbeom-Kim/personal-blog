@@ -16,6 +16,9 @@ export default defineConfig({
     __SSR__: false,
   },
   server: {
+    watch: {
+      ignored: ['posts/**/*'],
+    },
     proxy: {
       '/api': {
         target: 'http://localhost:3000',

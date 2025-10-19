@@ -4,6 +4,7 @@ export type FrontMatter = {
     'slug-suffix': string;
     title: string;
     subtitle: string;
+    description: string;
 }
 
 export type CompiledPost = {
