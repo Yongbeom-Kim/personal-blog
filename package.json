@@ -19,7 +19,8 @@
     "build:csr": "tsc -b && vite build --config config/csr.config.ts --outDir dist/csr && pnpm copy-assets",
     "copy-assets": "node scripts/copy-assets.js",
     
-    "build:docker": "docker build -f server.Dockerfile -t personal-blog-server .",
+    "docker:build": "pnpm build && docker build -f server.Dockerfile -t personal-blog-server .",
+    "docker:dev": "docker run -p 3000:3000 personal-blog-server",
     "lint": "eslint .",
     "preview": "vite preview",
     "clean": "rm -rf dist"

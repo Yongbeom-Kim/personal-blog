@@ -1,24 +1,8 @@
-# Variables for Lambda and ECR
-variable "backend_lambda_ecr_name" {
-  type        = string
-  description = "The name of the ECR repository for the backend lambda container."
-}
-
-variable "lambda_function_name" {
-  type        = string
-  description = "The name of the Lambda function."
-}
-
-# ECR Repository
-resource "aws_ecr_repository" "backend_lambda" {
-  name = var.backend_lambda_ecr_name
-
-  image_tag_mutability = "MUTABLE"
-  force_delete         = true
-  image_scanning_configuration {
-    scan_on_push = true
-  }
-}
+# # Variables for Lambda and ECR
+# variable "backend_lambda_ecr_name" {
+#   type        = string
+#   description = "The name of the ECR repository for the backend lambda container."
+# }
 
 # IAM Role for Lambda
 resource "aws_iam_role" "lambda_execution_role" {
@@ -44,15 +28,9 @@ resource "aws_iam_role_policy_attachment" "lambda_basic_execution" {
   role       = aws_iam_role.lambda_execution_role.name
 }
 
-# ECR Authorization Token
-data "aws_ecr_authorization_token" "token" {}
+# # ECR Authorization Token
+# data "aws_ecr_authorization_token" "token" {}
 
-# Docker Provider Configuration
-provider "docker" {
-  host  = data.aws_ecr_authorization_token.token.proxy_endpoint
-  username = data.aws_ecr_authorization_token.token.user_name
-  password = data.aws_ecr_authorization_token.token.password
-}
 
 # Lambda Function with dummy container initially
 resource "aws_lambda_function" "backend" {
@@ -61,7 +39,7 @@ resource "aws_lambda_function" "backend" {
   
   # Use a dummy public ECR image initially
   package_type = "Image"
-  image_uri    = "nginx:stable-alpine"
+  image_uri    = var.lambda_image_uri
   
   timeout = 30
   memory_size = 512
@@ -90,17 +68,4 @@ resource "aws_lambda_function_url" "backend_url" {
     expose_headers    = ["date", "keep-alive"]
     max_age          = 86400
   }
-}
-
-# Outputs
-output "ecr_repository_url" {
-  value = aws_ecr_repository.backend_lambda.repository_url
-}
-
-output "lambda_function_name" {
-  value = aws_lambda_function.backend.function_name
-}
-
-output "lambda_function_url" {
-  value = aws_lambda_function_url.backend_url.function_url
 }

@@ -1,0 +1,12 @@
+.env
+node_modules
+.git
+dist
+.terraform.lock.hcl
+main.tf
+terraform/
+deploy.sh
+README.md
+.gitignore
+.dockerignore
+eslint.config.js

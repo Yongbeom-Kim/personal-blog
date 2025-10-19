@@ -13,8 +13,6 @@ module "prod" {
     cloudfront_cache_policy_name = "yongbeom-com-personal-blog-cache-policy"
     base_domain = "yongbeom.com"
     full_domain = "blog.yongbeom.com"
-    cloudfront_function_name = "yongbeom-com-personal-blog-router"
-    aws_cloudfront_kvstore_name = "yongbeom-com-personal-blog-kvstore"
     backend_lambda_ecr_name = "personal-blog-backend-prod"
     lambda_function_name = "personal-blog-backend-prod"
 }
@@ -25,8 +23,6 @@ module "staging" {
     cloudfront_cache_policy_name = "yongbeom-com-personal-blog-cache-policy-staging"
     base_domain = "yongbeom.com"
     full_domain = "staging.blog.yongbeom.com"
-    cloudfront_function_name = "yongbeom-com-personal-blog-router-staging"
-    aws_cloudfront_kvstore_name = "yongbeom-com-personal-blog-kvstore-staging"
     backend_lambda_ecr_name = "personal-blog-backend-staging"
     lambda_function_name = "personal-blog-backend-staging"
 }
