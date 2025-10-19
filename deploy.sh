@@ -17,6 +17,7 @@ tofu() {
     command tofu -chdir=$TERRAFORM_DIR "$@"
 }
 
+tofu refresh -var="lambda_image_uri=placeholder"
 
 printf "\033[1;37mAuthenticating with ECR...\033[0m\n"
 ecr_repository_url=$(tofu output -raw ecr_repository_url)
@@ -27,7 +28,8 @@ docker build -t personal-blog-server .
 docker tag personal-blog-server:latest ${ecr_repository_url}:latest
 docker push ${ecr_repository_url}:latest
 
-image_digest=$(aws ecr describe-images --repository-name personal-blog-server-staging --image-ids '[{"imageTag":"latest"}]' --query 'imageDetails[0].imageDigest' --output text)
+ecr_repository_name=$(tofu output -raw ecr_repository_name)
+image_digest=$(aws ecr describe-images --repository-name ${ecr_repository_name} --image-ids '[{"imageTag":"latest"}]' --query 'imageDetails[0].imageDigest' --output text)
 printf "\033[1;37mImage digest: \033[0m\033[33;1m${image_digest}\033[0m\n"
 
 tofu apply -var="lambda_image_uri=${ecr_repository_url}@${image_digest}" -auto-approve

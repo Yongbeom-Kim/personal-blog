@@ -6,6 +6,11 @@ module "base" {
     ecr_repository_name = "personal-blog-server-staging"
 }
 
+output "ecr_repository_name" {
+  value = "personal-blog-server-staging"
+  description = "The name of the ECR repository."
+}
+
 output "ecr_repository_url" {
   value = module.base.ecr_repository_url
   description = "The URL of the ECR repository."
