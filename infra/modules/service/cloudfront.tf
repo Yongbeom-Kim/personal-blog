@@ -26,7 +26,7 @@ resource "aws_cloudfront_distribution" "frontend" {
     viewer_protocol_policy = "redirect-to-https"
     allowed_methods        = ["GET", "HEAD"]
     cached_methods         = ["GET", "HEAD"]
-    cache_policy_id        = aws_cloudfront_cache_policy.caching_optimized.id
+    cache_policy_id        = aws_cloudfront_cache_policy.infinite_cache.id
     target_origin_id       = local.cloudfront_origin_id
   }
 
@@ -46,11 +46,13 @@ resource "aws_cloudfront_distribution" "frontend" {
   }
 }
 
-resource "aws_cloudfront_cache_policy" "caching_optimized" {
+# Cache policy that caches everything for 1 year
+# Only works becaues deploy script invalidates all cache
+resource "aws_cloudfront_cache_policy" "infinite_cache" {
   name        = var.cloudfront_cache_policy_name
-  min_ttl     = 1
+  min_ttl     = 31536000
   max_ttl     = 31536000
-  default_ttl = 86400
+  default_ttl = 31536000
 
   parameters_in_cache_key_and_forwarded_to_origin {
     cookies_config {
