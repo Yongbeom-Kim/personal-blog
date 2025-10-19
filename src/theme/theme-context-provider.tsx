@@ -5,7 +5,6 @@ export const ThemeProvider = ({children}: {children: ReactNode}) => {
     const [theme, setTheme] = useState<Theme>(document.documentElement.getAttribute('data-theme')! as Theme)
 
     useEffect(() => {
-        console.log(theme)
         document.documentElement.setAttribute('data-theme', theme)
         localStorage.setItem('theme', theme)
     }, [theme])

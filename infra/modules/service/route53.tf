@@ -1,13 +1,3 @@
-variable "base_domain" {
-  type = string
-  description = "Base domain for the website. If your website is site.example.com, the base domain is example.com"
-}
-
-variable "full_domain" {
-  type = string
-  description = "Full domain for the website. If your website is site.example.com, the full domain is site.example.com"
-}
-
 data "aws_route53_zone" "main" {
   name = var.base_domain
 }

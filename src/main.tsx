@@ -1,21 +1,9 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { HashRouter } from "react-router-dom";
-import "./index.css";
-import App from "./App.tsx";
-import { PostHogProvider } from 'posthog-js/react'
-
-const options = {
-  api_host: import.meta.env.VITE_PUBLIC_POSTHOG_HOST,
-  defaults: '2025-05-24' as const,
-}
+import App from "./App";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <PostHogProvider apiKey={import.meta.env.VITE_PUBLIC_POSTHOG_KEY} options={options}>
-      <HashRouter>
-        <App />
-      </HashRouter>
-    </PostHogProvider>
+    <App location={window.location.pathname} />
   </StrictMode>
 );

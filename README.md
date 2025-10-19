@@ -1,25 +1,17 @@
 # Personal Blog
 
-A modern personal blog built with React, TypeScript, and Vite, featuring MDX content support and AWS deployment.
-
-## Features
-
-- **Modern Tech Stack**: React 19.1.1 with TypeScript and Vite
-- **MDX Content**: Write blog posts in MDX format with YAML frontmatter
-- **Dynamic Routing**: Clean URLs with React Router DOM 7.8.2
-- **Performance Optimized**: Code splitting and on-demand post loading
-- **SEO Friendly**: Semantic HTML structure and meta tags
-- **AWS Deployment**: Automated deployment to S3 with CloudFront CDN
-- **Infrastructure as Code**: Terraform configuration for AWS resources
+A modern personal blog built with React, TypeScript, and Vite, featuring server-side rendering (SSR), MDX content support, and AWS Lambda deployment.
 
 ## Tech Stack
 
 - **Frontend**: React 19.1.1, TypeScript, Vite
+- **Backend**: Express.js with server-side rendering
 - **Routing**: React Router DOM 7.8.2
 - **Content**: MDX with YAML frontmatter
 - **Package Manager**: pnpm
-- **Deployment**: AWS S3 + CloudFront
-- **Infrastructure**: Terraform
+- **Containerization**: Docker with AWS Lambda adapter
+- **Deployment**: AWS Lambda + ECR + CloudFront
+- **Infrastructure**: Terraform with modular structure
 
 ## Project Structure
 
@@ -27,14 +19,24 @@ A modern personal blog built with React, TypeScript, and Vite, featuring MDX con
 src/
 ├── pages/
 │   ├── HomePage.tsx          # Landing page
-│   ├── PostsPage.tsx         # Blog posts listing
-│   ├── PostPage.tsx          # Individual post view
+│   ├── post/
+│   │   ├── PostPage.tsx      # Individual post view
+│   │   └── mdx-components/   # Custom MDX components
 │   └── posts/                # MDX blog posts
-│       ├── post1.mdx
-│       └── post2.mdx
-├── types/
-│   └── mdx.d.ts             # MDX type definitions
-└── App.tsx                  # Main app component
+│       ├── 2025-09-03-hello-world/
+│       └── 2025-09-08-dark-theme-ssr/
+├── server/
+│   ├── index.ts             # Express server entry point
+│   ├── html.ts              # HTML template utilities
+│   └── post.ts              # Post processing utilities
+├── ssr/                     # Server-side rendering utilities
+│   ├── components/          # SSR-specific components
+│   ├── context/             # SSR state management
+│   ├── hooks/               # SSR hooks
+│   └── utils/               # SSR utilities
+├── components/              # React components
+├── theme/                   # Theme management
+└── types/                   # TypeScript definitions
 ```
 
 ## Development
@@ -51,17 +53,22 @@ src/
    pnpm install
    ```
 
-2. Start development server:
+2. Start development server (CSR mode):
    ```bash
    pnpm dev
    ```
 
-3. Open [http://localhost:5173](http://localhost:5173) in your browser
+3. Start development server with SSR:
+   ```bash
+   pnpm dev:ssr
+   ```
+
+4. Open [http://localhost:5173](http://localhost:5173) in your browser
 
 ### Adding Blog Posts
 
-1. Create a new `.mdx` file in `src/pages/posts/`
-2. Add YAML frontmatter with metadata:
+1. Create a new directory in `posts/` with the format `YYYY-MM-DD-post-slug/`
+2. Add a `post.mdx` file with YAML frontmatter:
    ```yaml
    ---
    slug: "my-new-post"
@@ -71,47 +78,59 @@ src/
    ---
    ```
 3. Write your content in Markdown below the frontmatter
-4. The post will be automatically discovered and added to the blog
+4. Add any images or assets to the same directory
+5. The post will be automatically discovered and added to the blog
 
 ## Deployment
 
 ### AWS Infrastructure
 
 The blog is deployed to AWS using:
-- **S3**: Static website hosting
+- **AWS Lambda**: Serverless function hosting with Express.js
+- **ECR**: Container registry for Docker images
 - **CloudFront**: CDN for global distribution
-- **Route53**: DNS management (optional)
+- **Route53**: DNS management
+- **Multi-Environment**: Separate staging and production environments
 
 ### Deploy to AWS
 
 1. Configure AWS credentials
-2. Set up OpenTofu:
+2. Set up infrastructure (first time only):
    ```bash
-   tofu init
-   tofu plan
-   tofu apply
+   # For staging
+   ./pre-deploy.sh staging
+   
+   # For production
+   ./pre-deploy.sh prod
    ```
-3. Deploy the site:
+3. Deploy the application:
    ```bash
-   ./deploy_s3.sh
+   # Deploy to staging
+   ./deploy.sh staging
+   
+   # Deploy to production
+   ./deploy.sh prod
    ```
 
 ### Build for Production
 
 ```bash
+# Build SSR application
 pnpm build
+
+# Build Docker image
+pnpm docker:build
 ```
 
-The built files will be in the `dist/` directory.
+The built files will be in the `dist/` directory and Docker image will be tagged for deployment.
 
 ## Architecture
 
+- **Server-Side Rendering**: Express.js server with React SSR for optimal SEO
 - **Dynamic Imports**: Posts are loaded on-demand using `import.meta.glob`
 - **Type Safety**: Full TypeScript support with proper MDX typing
 - **Hot Module Replacement**: Instant updates during development
 - **Code Splitting**: Automatic chunking for optimal loading
-- **SEO Optimization**: Server-side rendering ready structure
-
-## License
-
-MIT
+- **Containerization**: Docker-based deployment with AWS Lambda adapter
+- **Multi-Environment**: Separate staging and production deployments
+- **Modular Infrastructure**: Terraform modules for base and service resources
