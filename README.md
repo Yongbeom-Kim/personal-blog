@@ -55,15 +55,14 @@ src/
 
 2. Start development server (CSR mode):
    ```bash
-   pnpm dev
+   pnpm dev # on one terminal
+   pnpm dev:server # on another terminal
    ```
 
 3. Start development server with SSR:
    ```bash
    pnpm dev:ssr
    ```
-
-4. Open [http://localhost:5173](http://localhost:5173) in your browser
 
 ### Adding Blog Posts
 
@@ -75,6 +74,7 @@ src/
    title: "My New Post"
    date: "2024-01-15"
    subtitle: "A brief description of the post"
+   description: "160-character, SEO-optimized description of the post"
    ---
    ```
 3. Write your content in Markdown below the frontmatter
