@@ -35,8 +35,8 @@ export const getPost = async (slug: string) => {
   return await compileMdx(readFileSync(postPath, "utf-8"), postPath);
 };
 
-const getSlug = (frontmatter: {date: string, "slug-suffix": string}) => {
-  return (new Date(frontmatter.date)).toISOString().split("T")[0] + "-" + frontmatter["slug-suffix"];
+const getSlug = (filePath: string) => {
+  return path.basename(path.dirname(filePath));
 }
 
 export const getPostsSummary = async () => {
@@ -51,7 +51,7 @@ export const getPostsSummary = async () => {
     const frontmatters = await Promise.all(mdxFiles.map(async (filePath) => {
         const content = readFileSync(filePath, "utf-8");
         const { frontmatter } = await compileMdx(content, filePath);
-        frontmatter.slug = getSlug(frontmatter);
+        frontmatter.slug = getSlug(filePath);
         return {
             ...frontmatter
         }

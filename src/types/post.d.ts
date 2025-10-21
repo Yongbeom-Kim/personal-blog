@@ -1,7 +1,6 @@
 export type FrontMatter = {
     date: string;
     slug: string;
-    'slug-suffix': string;
     title: string;
     subtitle: string;
     description: string;
