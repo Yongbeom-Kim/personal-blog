@@ -39,7 +39,7 @@ function HomePage() {
       <Header />
       
       <main className="mb-20">
-        {posts.filter((post) => import.meta.env.DEV || new Date(post.date) <= new Date()).map((post) => (
+        {posts.filter((post) => import.meta.env.DEV || !post.unlisted).map((post) => (
           <PostSummaryItem key={post.slug} frontmatter={post} />
         ))}
       </main>

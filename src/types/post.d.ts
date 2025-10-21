@@ -5,6 +5,7 @@ export type FrontMatter = {
     title: string;
     subtitle: string;
     description: string;
+    unlisted: boolean;
 }
 
 export type CompiledPost = {
