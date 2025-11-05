@@ -1,0 +1,113 @@
+---
+title: "Abusing Shebangs (#!) for Dotfile Management"
+date: "9999-11-11"
+subtitle: "INSERT SUBTITLE HERE"
+description: "INSERT DESCRIPTION HERE"
+unlisted: true
+---
+
+Recently, I introduced my friend Hans to the browser Vivaldi.
+He loved it, but one pain point was that the tabs took too much space, but the browser did not support collapsing/expanding the tabs by hover.
+
+This is a native feature in a browser like Arc:
+
+\<INSERT VIDEO of ARC BROWSER>
+
+I thought this was a cool feature too, so I decided to go down the rabbit hole.
+
+My exploration took me to Vivaldi's modification [forum](https://forum.vivaldi.net/category/52/modifications),
+where I found a usable CSS snippet, which I put in `~/.vivaldi/css/auto-tabs.css`.
+
+\<INSERT VIDEO OF VIVALDI>
+
+Of course, my next thought was to *replicate* this setup across other devices,
+so I unearthed my [dotfiles](https://github.com/Yongbeom-Kim/dotfiles) repo, which hadn't seen light since 2024.
+
+
+## Why I hated my (old) dotfile manager
+
+### Tracking Dotfiles
+
+Fundamentally, a dotfiles manager must keep two pieces of information in sync for every configuration file: the file contents, and the intended file location.
+
+To me, this is a problem with fundamentally *unsatisfying* solutions.
+
+Typically, you would either have a kind of central store which maps dotfiles in your git repo to its intended location. Something like `./dotfiles/vim/.vimrc ⭢ $HOME/.vimrc`.
+
+If you are a power user, you might also augment your dotfile manager with some kind of abstraction, with some rules like "Everything in `./dotfiles/bin` is available in `$PATH`".
+
+I also had done this with a python script back then:
+
+![TODO](./python-dotfile-manager-configs.png "TODO")
+
+I can't begin to tell you how much I hate this. 
+
+Since I first wrote this script in 2023, I've begun to change my thoughts on how data should be structured,
+and in this case I strongly believe the contents and location of dotfiles ought to be colocated together.
+
+These kinds of abstractions force you to always remember to change two things in different places when trying to only do one. I think it's bad design, and largely prone to human error.
+
+### Symlinks
+
+When I was a student, with my first experiences in Unix systems and Bash scripting, I thought symlinks were magic,
+and so it is of no surprise that I chose to symlink my dotfiles *to* the git repo. This is a pretty common practice across dotfile managers as well.
+
+Personally for me, I've found the symlink thing to be of much greater pain and annoyance than value.
+
+My work-issued laptop has ended up having some work-specific configs in my `.zshrc`
+that I would prefer not to be synced across all my machines, and I think I will find more such cases as well.
+
+The key point is, while my machines share a **base dotfile**, they also sometimes need to have their own, machine-specific configs.
+
+I need to be able to choose which configs to commit, and which to keep separate.
+
+These two reasons were enough for me to rewrite my dotfile manager.
+
+
+## Using Shebangs
+
+Ever seen that `#!/bin/bash` thing at the top of your script?
+Here is what it does, and it is important to understand this to make sense of my rewrite.
+
+If you have a file `test.sh`:
+
+```bash
+#!/bin/bash
+
+echo test
+```
+
+And you run `./test.sh` in your terminal, it is (almost) equivalent to running this in your terminal:
+
+```bash
+./test.sh
+# is equivalent to
+/bin/bash ./test.sh
+```
+
+The shebang (`#!`) just instructs your kernel \<TODO HOW THIS WORKS> on which "interpreter" to run the program with.
+
+Naturally, there is no reason why it should be limited to `#!/bin/bash`.
+Some people put `#!/usr/bin/env -S bash` for portability, but go wild. Be creative.
+
+Here is an infinite countdown:
+
+```bash
+#!/usr/bin/env -S bash -c 'n=$(tail -n1 "$0"); echo $n | tee -a "$0"; exed "$0";'
+10
+```
+
+Or try this fun one with GNU parallel (don't run it on anything too important)
+
+NOTE for yongbeom:
+
+- This is a genuine fork bomb, crash your computer in seconds
+```bash
+#!/usr/bin/env -S bash -c 'tac "$0" | head -n -1 | parallel -n1 bash -c "n={}; echo $((n+1)) >> \"$0\"; exec \"$0\"" _ "$0"'
+0
+```
+- this has some contention for the file, so it is still a fork bomb but it scales much slower
+```bash
+#!/usr/bin/env -S bash -c 'tac "$0" | head -n -1 | xargs -P4 -I{} bash -c '\''n="$1"; echo $((n+1)) >> "$2"; exec "$2"'\'' _ {} "$0"'
+0
+```
