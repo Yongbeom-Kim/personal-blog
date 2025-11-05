@@ -106,7 +106,7 @@ NOTE for yongbeom:
 #!/usr/bin/env -S bash -c 'tac "$0" | head -n -1 | parallel -n1 bash -c "n={}; echo $((n+1)) >> \"$0\"; exec \"$0\"" _ "$0"'
 0
 ```
-- this has some contention for the file, so it is still a fork bomb but it scales much slower
+- this has some contention for the file, so it is still a fork bomb but it scales much slower. Why? Maybe a future post
 ```bash
 #!/usr/bin/env -S bash -c 'tac "$0" | head -n -1 | xargs -P4 -I{} bash -c '\''n="$1"; echo $((n+1)) >> "$2"; exec "$2"'\'' _ {} "$0"'
 0
