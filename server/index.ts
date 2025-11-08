@@ -11,6 +11,7 @@ import { SSR_POST_CONTENT_KEY } from "../src/ssr/utils/constants";
 import { insertMetadata } from "./metadata/insert";
 import { getHomepageMetadata } from "./metadata/home-page";
 import { getPostPageMetadata } from "./metadata/post-page";
+import { posthogProxy, POSTHOG_PROXY_PATH_PREFIX } from "./posthog/proxy";
 
 const app = express();
 
@@ -39,7 +40,6 @@ app.get("/posts/:slug", async (req, res) => {
     [SSR_POST_CONTENT_KEY]: postData,
   });
   const templateWithMetadata = insertMetadata(template, getPostPageMetadata(req.params.slug, postData));
-  console.log(templateWithMetadata)
   const finalHtml = injectSsrEntry(templateWithMetadata, html);
   const ssrStateTagsHtml = injectSsrState(finalHtml, {
     [SSR_POST_CONTENT_KEY]: postData,
@@ -76,6 +76,9 @@ app.get("/api/posts-summary", async (_, res) => {
   const posts = await getPostsSummary();
   res.json(posts);
 });
+
+// posthog
+app.all(`${POSTHOG_PROXY_PATH_PREFIX}/*`, posthogProxy)
 
 app.use((req, res) => {
   console.log(`404 Not Found: ${req.method} ${req.originalUrl}`);

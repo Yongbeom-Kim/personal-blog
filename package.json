@@ -5,20 +5,16 @@
   "type": "module",
   "scripts": {
     "server": "tsx server/index.ts",
-
     "build:ssr": "tsc -b && pnpm run build:ssr-client && pnpm run build:ssr-server && pnpm copy-assets",
     "build:ssr-client": "vite build --config config/ssr-client.config.ts",
     "build:ssr-server": "vite build --config config/ssr-server.config.ts",
     "dev:ssr": "nodemon --watch src --watch server --watch config --ext '*' --exec \"pnpm clean && pnpm run build:ssr && pnpm run server\"",
-
     "dev": "pnpm dev:csr",
     "dev:csr": "vite --config config/csr.config.ts",
     "dev:server": "nodemon --watch server --ext '*' --exec \"pnpm run server\"",
-
     "build": "pnpm build:ssr && pnpm copy-assets",
     "build:csr": "tsc -b && vite build --config config/csr.config.ts --outDir dist/csr && pnpm copy-assets",
     "copy-assets": "node scripts/copy-assets.js",
-    
     "docker:build": "docker build -t personal-blog-server .",
     "docker:dev": "docker run -p 3000:3000 personal-blog-server",
     "lint": "eslint .",
@@ -30,6 +26,7 @@
     "@mdx-js/react": "^3.1.1",
     "@tailwindcss/vite": "^4.1.12",
     "both": "link:@wooorm/starry-night/style/both",
+    "dotenv": "^17.2.3",
     "express": "^4.21.2",
     "gray-matter": "^4.0.3",
     "posthog-js": "^1.261.7",

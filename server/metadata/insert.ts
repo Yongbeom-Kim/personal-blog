@@ -16,7 +16,6 @@ export const injectMetaTags = (html: string, metaTags: MetaTag[]) => {
         
         Object.entries(tag).forEach(([key, value]) => {
             attrs = `${attrs} ${key}="${value}"`
-            console.log({key, value, attrs})
         })
 
         return `<meta ${attrs}>`

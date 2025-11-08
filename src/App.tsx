@@ -6,9 +6,10 @@ import PostPage from "./pages/post/PostPage";
 import "./index.css";
 import { IsomorphicRouter } from "./ssr/components/isomorphic-router";
 import { ClientOnlyContext } from "./ssr/context/client-only-context";
+import type { PostHogConfig } from "posthog-js";
 
-const options = {
-  api_host: import.meta.env.VITE_PUBLIC_POSTHOG_HOST,
+const options: Partial<PostHogConfig> = {
+  api_host: '/list',
   defaults: "2025-05-24" as const,
 };
 
