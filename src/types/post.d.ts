@@ -5,6 +5,7 @@ export type FrontMatter = {
     subtitle: string;
     description: string;
     unlisted: boolean;
+    "og:image"?: string;
 }
 
 export type CompiledPost = {

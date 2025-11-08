@@ -13,6 +13,10 @@ export const getPostPageMetadata = (slug: string, postData: CompiledPost) => {
 
   const title = `${postTitle} | Yongbeom's Dev Blog`;
 
+  const og_image_url = postData.frontmatter["og:image"]
+    ? `${HOMEPAGE_CANONICAL_URL}/assets/${slug}/${postData.frontmatter["og:image"]}`
+    : HOMEPAGE_IMAGE_URL;
+
   return {
     title,
     canonicalUrl,
@@ -46,7 +50,7 @@ export const getPostPageMetadata = (slug: string, postData: CompiledPost) => {
       {
         name: "image",
         property: "og:image",
-        content: HOMEPAGE_IMAGE_URL,
+        content: og_image_url,
       },
       {
         property: "og:site_name",
