@@ -42,6 +42,7 @@ export const getHomepageMetadata = () => {
         content: HOMEPAGE_CANONICAL_URL,
       },
       {
+        name: "image",
         property: "og:image",
         content: HOMEPAGE_IMAGE_URL,
       },

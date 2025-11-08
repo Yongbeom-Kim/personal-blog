@@ -12,11 +12,14 @@ const injectCanonicalUrl = (html: string, canonicalUrl: string) => {
 
 export const injectMetaTags = (html: string, metaTags: MetaTag[]) => {
     const metaTagsHtml = metaTags.map(tag => {
-        if ('name' in tag) {
-            return `<meta name="${tag.name}" content="${tag.content}">`;
-        } else {
-            return `<meta property="${tag.property}" content="${tag.content}">`;
-        }
+        let attrs = ''
+        
+        Object.entries(tag).forEach(([key, value]) => {
+            attrs = `${attrs} ${key}="${value}"`
+            console.log({key, value, attrs})
+        })
+
+        return `<meta ${attrs}>`
     }).join('\n');
     
     return html.replace('</head>', `${metaTagsHtml}\n</head>`);
