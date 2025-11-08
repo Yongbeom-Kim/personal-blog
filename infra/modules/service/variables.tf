@@ -31,3 +31,13 @@ variable "cloudfront_cache_policy_name" {
   type = string
   description = "Name of the CloudFront cache policy for the website."
 }
+
+variable "env_var_VITE_PUBLIC_POSTHOG_KEY" {
+  type        = string
+  description = "Value for the VITE_PUBLIC_POSTHOG_KEY environment variable in the Lambda function."
+}
+
+variable "env_var_VITE_PUBLIC_POSTHOG_HOST" {
+  type        = string
+  description = "Value for the VITE_PUBLIC_POSTHOG_HOST environment variable in the Lambda function."
+}

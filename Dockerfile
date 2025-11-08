@@ -16,6 +16,14 @@ RUN npm install -g pnpm
 # Copy all source files
 COPY . .
 
+# Accept build arguments for Vite environment variables
+ARG VITE_PUBLIC_POSTHOG_KEY
+ARG VITE_PUBLIC_POSTHOG_HOST
+
+# Set environment variables for build time
+ENV VITE_PUBLIC_POSTHOG_KEY=${VITE_PUBLIC_POSTHOG_KEY}
+ENV VITE_PUBLIC_POSTHOG_HOST=${VITE_PUBLIC_POSTHOG_HOST}
+
 # Install dependencies
 RUN pnpm install --frozen-lockfile
 

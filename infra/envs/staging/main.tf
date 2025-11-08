@@ -16,11 +16,21 @@ output "ecr_repository_url" {
   description = "The URL of the ECR repository."
 }
 
-
 variable "lambda_image_uri" {
   type = string
   description = "The URI of the Lambda function image."
 }
+
+variable "env_var_VITE_PUBLIC_POSTHOG_KEY" {
+  type        = string
+  description = "Value for the VITE_PUBLIC_POSTHOG_KEY environment variable in the Lambda function."
+}
+
+variable "env_var_VITE_PUBLIC_POSTHOG_HOST" {
+  type        = string
+  description = "Value for the VITE_PUBLIC_POSTHOG_HOST environment variable in the Lambda function."
+}
+
 
 module "service" {
     source = "../../modules/service"
@@ -30,6 +40,8 @@ module "service" {
     lambda_function_name = "personal-blog-server-staging"
     lambda_image_uri = var.lambda_image_uri
     cloudfront_cache_policy_name = "yongbeom-com-personal-blog-cache-policy-staging"
+    env_var_VITE_PUBLIC_POSTHOG_KEY = var.env_var_VITE_PUBLIC_POSTHOG_KEY
+    env_var_VITE_PUBLIC_POSTHOG_HOST = var.env_var_VITE_PUBLIC_POSTHOG_HOST
 }
 
 output "lambda_function_url" {

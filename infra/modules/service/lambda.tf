@@ -41,6 +41,8 @@ resource "aws_lambda_function" "backend" {
   environment {
     variables = {
       NODE_ENV = "production"
+      VITE_PUBLIC_POSTHOG_KEY = var.env_var_VITE_PUBLIC_POSTHOG_KEY
+      VITE_PUBLIC_POSTHOG_HOST = var.env_var_VITE_PUBLIC_POSTHOG_HOST
     }
   }
 }
