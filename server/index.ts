@@ -32,6 +32,19 @@ app.get("/", async (_, res) => {
   res.send(finalHtml);
 });
 
+app.get("/posts/latest", async (_, res) => {
+  const postsSummary = await getPostsSummary();
+  const visiblePosts = postsSummary.filter((post) => !post.unlisted);
+  
+  if (visiblePosts.length === 0) {
+    res.status(404).send("No posts found");
+    return;
+  }
+  // Posts are already sorted by date (newest first)
+  const latestPost = visiblePosts[0];
+  res.redirect(302, `/posts/${latestPost.slug}`);
+});
+
 app.get("/posts/:slug", async (req, res) => {
   const template = readHtml();
   const postData = await getPost(req.params.slug);
