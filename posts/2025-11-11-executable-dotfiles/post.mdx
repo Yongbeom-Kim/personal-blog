@@ -2,9 +2,9 @@
 title: "Executable Dotfiles"
 date: "2025-11-11"
 subtitle: "My dotfiles install themselves."
-description: "Building a self-installing, declarative dotfile management system using executable scripts."
+description: "Building a dotfile management system where configuration files are executables that install themselves."
 unlisted: true
-"og:image": executable-vimrc-preview.png
+"og:image": executable-vimrc-preview-wide.png
 ---
 
 Recently, motivated by my friend [Hans](https://www.linkedin.com/in/hans-delano/), I added a custom CSS snippet to support collapsing/expanding the tab list by hover.
@@ -15,7 +15,9 @@ Recently, motivated by my friend [Hans](https://www.linkedin.com/in/hans-delano/
   </div>
 </div>
 
-Of course, my next thought was to _replicate_ this setup across other devices,
+
+I mean, this is really quite convenient, and for the first time in a long time,
+I felt that I should *replicate* this setup across my other devices.
 so I unearthed my [dotfiles](https://github.com/Yongbeom-Kim/dotfiles) repo, which hadn't seen the light of day since 2024.
 
 ## Why I hated my (old) dotfile manager
@@ -32,9 +34,9 @@ You would typically do this with a central script of some sort, storing a mappin
 
 > `$GIT_ROOT/dotfiles/vim/.vimrc ⭢ $HOME/.vimrc`
 
-A power user might also introduce some abstractions, something like:
+{/* A power user might also introduce some abstractions, something like:
 
-> "Everything in `./dotfiles/bin` is available in `$PATH`"
+> "Everything in `./dotfiles/bin` is available in `$PATH`" */}
 
 I also had done this with a python script back then:
 
@@ -48,27 +50,23 @@ I think the dotfile contents and locations should be colocated together. I shoul
 
 ### Symlinks
 
-In 2023, I was sold the idea that symlinks were the holy grail of dotfile management.
-Create a symlink `$HOME/.vimrc  ⭢ $GIT_ROOT/dotfiles/vim/.vimrc`, and all updates are synced to your repo for version control.
+In 2023, I was sold on the idea that symlinks were the holy grail of dotfile management.
+Create a symlink $HOME/.vimrc ⭢ .dotfiles/vim/.vimrc, and all updates stay in sync witversion control.
 
-I've since changed my mind.
+I can't say I feel the same now.
 
-My work-issued laptop has ended up having some work-specific configs in my `.zshrc`
-that I would prefer not to be synced across all my machines, and I may find more such cases as well.
-Sure, they share a kind of **base dotfile**, but each also has its own machine-specific configs.
+Dotfiles define how I interact with machines (if at all) — I am *literally* crippled when I `ssh` into a machine without my vim bindings.
 
-Additionally, configuration files are _sensitive_.
-For me, the invisible and automatic way in which symlinks propagate dotfile changes to and fro from version control is bad, and should be avoided.
+Losing them, or any misconfiguration, opens up a small can of tiny inconveniences I must carefully reinvent the wheel for.
 
-What happens if you do a `git pull` in your dotfile repo and a Linux-specific configuration file breaks your MacOS environment?
+This time, I found the typical git-symlink workflow a little *too* invisible for my liking.
+What if a `git pull` breaks your MacOS environment with a Linux-specific config?
 
-Any actions involving dotfiles should be **explicit** and intentional.
-
-Quick background before I go over my new design:
+I decided I'd rather every action be *explicit* and I.
 
 ## About `#!` Shebangs
 
-Feel free to skip this section if you know how shebangs work.
+Quick background before I go over my new design (feel free to skip this section if you know how shebangs work.)
 
 Here is what that `#!/bin/bash` at the top of your script does. 
 
@@ -107,9 +105,8 @@ execve("/bin/bash", ["/bin/bash", "./test.sh"], envp)
 ```
 
 Naturally, there is no reason why it should be limited to `#!/bin/bash`.
-Some people put `#!/usr/bin/env -S bash` for portability, but go wild. Be creative.
 
-This prints the file back at you:
+For example, this prints the file back at you:
 
 ```bash
 #!/bin/cat
@@ -139,15 +136,15 @@ Or try this fun one with GNU parallel (Linux-only, don't run it on anything too 
 0
 ``` */}
 
-You can probably see where I am going with this.
 
 ## New Dotfile Manager
 
-My new dotfile system is predicated on this idea.
+
+You can probably see where I am going with this.
 
 ### Initial Design & Challenges
 
-Initially, the design looked something like this:
+Initially, I thought aboud doing something like this:
 
 ```vim
 ./dotfile/vim/.vimrc
@@ -204,12 +201,12 @@ On Linux it works fine, but on MacOS you get something like:
 /usr/local/bin/_copy_dotfile: eval: line 220: unexpected EOF while looking for matching `"'
 ```
 
-Turns out, MacOS's shebang parser doesn't allow you to escape spaces.
-It seems like the parser uses a simple whitespace-based tokenizer that
-doesn't respect shell quoting rules, so you can put double quotes, single quotes,
-or escape the space, but they will always be resolved as separate arguments.
+Turns out, MacOS's shebang parser **doesn't allow you to escape spaces** (seriously?).
+Looks like the parser uses a simple whitespace-based tokenizer that
+doesn't respect shell quoting rules. You can wrap double quotes, single quotes,
+or escape the space with a backslash, but it is always resolved as separate arguments.
 
-To say the least, this limitation wasn't something I was happy with.
+MacOS's simplistic shebang parsing broke the portability I needed.
 
 ### Path Requirements
 
@@ -225,7 +222,7 @@ ${XDG_CONFIG_BASE}/Cursor/User/settings.json
 
 It is really a shame, but this neat little one-line shebang trick cannot support this use case.
 
-## The Second (Hopefully Last) Rewrite
+## The Second Rewrite (Hopefully the Last)
 
 I still believed in the executable-dotfile philosophy, so I decided to bite the bullet
 and write a simple parser in bash for a more expressive syntax.
@@ -310,7 +307,7 @@ Find the full script [here](https://github.com/Yongbeom-Kim/dotfiles/blob/001a82
 
 For the tool, I decided to adopt a git-like workflow.
 
-We have the _dotfiles_ git repo, and we can think of the dotfiles in the relevant paths in the system as a remote origin.
+Instead of symlinks, I decided I'd push/pull the dotfiles into their respective locations explicitly - think of having the *dotfiles* git repo, and those in their actual paths as a remote origin.
 
 I define the following `make` commands:
 ```bash
@@ -337,8 +334,8 @@ This allows me to define a very simple workflow, of doing `make pull`, resolve c
 
 ## Conclusion
 
-Many hours were spent writing, testing and debugging bash scripts. But, this approach is one that I am finally happy with (at least until the next rewrite).
+Many hours went into writing, testing, and debugging bash scripts — but this version is one I'm finally happy with (at least until the next rewrite).
 
-Each dotfile is self-contained, declarative and executable, with no magic abstractions.
+Each dotfile is now self-contained, declarative, and executable, with no hidden abstractions.
 
-This *executable dotfile* model keeps everything explicit and intentional, because configuration files just feel so sensitive for me.
+It feels *just* right for my dotfiles — prioritizing intention over convenience, explicit over automation, and transparency over abstraction.
