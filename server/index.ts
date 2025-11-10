@@ -39,7 +39,6 @@ app.get("/posts/:slug", async (req, res) => {
     [SSR_POST_CONTENT_KEY]: postData,
   });
   const templateWithMetadata = insertMetadata(template, getPostPageMetadata(req.params.slug, postData));
-  console.log(templateWithMetadata)
   const finalHtml = injectSsrEntry(templateWithMetadata, html);
   const ssrStateTagsHtml = injectSsrState(finalHtml, {
     [SSR_POST_CONTENT_KEY]: postData,
