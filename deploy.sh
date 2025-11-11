@@ -1,26 +1,13 @@
 #!/bin/bash
 set -e
 
-if [[ "$1" == *"prod"* ]]; then
-    printf "\033[33;1mDeploying to prod\033[0m\n"
-    TERRAFORM_DIR="infra/envs/prod"
-else
-    printf "\033[33;1mDeploying to staging\033[0m\n"
-    TERRAFORM_DIR="infra/envs/staging"
-fi
+. ./source.sh "$1"
 
 aws() {
     AWS_PAGER="" command aws "$@"
 }
 
-tofu() {
-    command tofu -chdir=$TERRAFORM_DIR "$@"
-}
-
-set -a && . ./.env && set +a
-
-export TF_VAR_env_var_VITE_PUBLIC_POSTHOG_KEY="${VITE_PUBLIC_POSTHOG_KEY}"
-export TF_VAR_env_var_VITE_PUBLIC_POSTHOG_HOST="${VITE_PUBLIC_POSTHOG_HOST}"
+printf "\033[33;1mDeploying to $ENV...\033[0m\n"
 
 tofu refresh -var="lambda_image_uri=placeholder"
 

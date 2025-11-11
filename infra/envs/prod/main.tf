@@ -1,3 +1,11 @@
+terraform {
+  backend "s3" {
+    bucket = "blog-yongbeom-com-terraform-state"
+    key    = "prod/terraform.tfstate"
+    region = "us-east-1"
+  }
+}
+
 module "base" {
     source = "../../modules/base"
     environment = "prod"
