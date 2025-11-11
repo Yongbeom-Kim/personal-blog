@@ -23,13 +23,13 @@ So, I unearthed my [dotfiles](https://github.com/Yongbeom-Kim/dotfiles) repo, wh
 
 ## Why I hated my (old) dotfile manager
 
-A reason why the repo was in a state of disuse was that I didn't really like its design ever since I built it in 2023.
+One reason why the repo was in a state of disuse was that I didn't really like its design ever since I built it in 2023.
 
 It was for two main reasons: I didn't really like how the dotfiles were tracked, and I'd grown to dislike the idea of symlinking dotfiles to version-controlled repos.
 
 ### Tracking Dotfiles
 
-Fundamentally, a dotfile manager must keep two pieces of information in sync for every configuration file: the **contents**, and **location** of the dotfile.
+Fundamentally, a dotfile manager must keep two pieces of information in sync for every configuration file: the **content** and **location** of the dotfile.
 
 You would typically do this with a central script of some sort, storing a mapping:
 
@@ -47,7 +47,7 @@ Coming back to the repository after an entire year, I didn't think this was a go
 
 I don't want to _remember_ that after introducing a new dotfile, I need to edit some other script to make things work, not to mention all the other abstractions I must have put in back then.
 
-I think the dotfile contents and locations should be colocated together. I shouldn't need to edit two different places to do one thing.
+I think the dotfile contents and locations should be colocated. I shouldn't need to edit two different places to do one thing.
 
 ### Symlinks
 
@@ -61,9 +61,9 @@ Dotfiles define how I interact with machines (if at all) — I am *literally* cr
 Losing them, or any misconfiguration, opens up a small can of tiny inconveniences I must carefully reinvent the wheel for.
 
 This time, I found the typical git-symlink workflow a little *too* invisible for my liking.
-What if a `git pull` breaks your MacOS environment with a Linux-specific config?
+What if a `git pull` breaks your macOS environment with a Linux-specific config?
 
-I decided I'd rather every action be *explicit* and I.
+I decided I'd rather every action be *explicit* and intentional.
 
 ## About `#!` Shebangs
 
@@ -107,7 +107,7 @@ execve("/bin/bash", ["/bin/bash", "./test.sh"], envp)
 
 Naturally, there is no reason why it should be limited to `#!/bin/bash`.
 
-For example, this prints the file back at you:
+For example, this prints the file back to you:
 
 ```bash
 #!/bin/cat
@@ -202,16 +202,16 @@ On Linux it works fine, but on MacOS you get something like:
 /usr/local/bin/_copy_dotfile: eval: line 220: unexpected EOF while looking for matching `"'
 ```
 
-Turns out, MacOS's shebang parser **doesn't allow you to escape spaces** (seriously?).
+Turns out, macOS's shebang parser **doesn't allow you to escape spaces** (seriously?).
 Looks like the parser uses a simple whitespace-based tokenizer that
 doesn't respect shell quoting rules. You can wrap double quotes, single quotes,
 or escape the space with a backslash, but it is always resolved as separate arguments.
 
-MacOS's simplistic shebang parsing broke the portability I needed.
+macOS's simplistic shebang parsing broke the portability I needed.
 
 ### Path Requirements
 
-At this point, I also realized that my dotfile locations were going to be different in different operating systems. Look at my Cursor (VSCode) `settings.json` file path:
+At this point, I also realized that my dotfile locations were going to be different across different operating systems. Look at my Cursor (VSCode) `settings.json` file path:
 
 ```bash
 # In MacOS:
@@ -239,7 +239,7 @@ I decided on something like this:
 # target: ${HOME}/.vimrc
 
 " Remap esc key
-lnoremap kj <C-[>
+inoremap kj <C-[>
 inoremap jk <C-[>
 ```
 
@@ -308,7 +308,7 @@ Find the full script [here](https://github.com/Yongbeom-Kim/dotfiles/blob/001a82
 
 For the tool, I decided to adopt a git-like workflow.
 
-Instead of symlinks, I decided I'd push/pull the dotfiles into their respective locations explicitly - think of having the *dotfiles* git repo, and those in their actual paths as a remote origin.
+Instead of symlinks, I decided I'd push/pull the dotfiles into their respective locations explicitly — think of it as having the *dotfiles* git repo, and those in their actual paths as a remote origin.
 
 I define the following `make` commands:
 ```bash
@@ -320,7 +320,7 @@ make restore_backup # Restore backups of all dotfiles
 make remove_backups # Remove backups of dotfiles in this repo
 ```
 
-I can define the following commands in my executable:
+This is made possible by the following commands in my executable:
 ```bash
 ./DOTFILE pull           # Merge this dotfile's target into itself.
 ./DOTFILE push           # Push this dotfile into its target location, make a backup.        
@@ -331,7 +331,7 @@ I can define the following commands in my executable:
 
 Merges are done with `git merge-file`, for nice and familiar merge conflicts. Each command, too, checks and throws if there are any git merge conflicts.
 
-This allows me to define a very simple workflow, of doing `make pull`, resolve conflicts, and `make push` to synchronize dotfile changes, as if we were in a real git repo.
+This allows me to define a very simple workflow: do `make pull`, resolve conflicts, and `make push` to synchronize dotfile changes, as if we were in a real git repo.
 
 ## Conclusion
 
